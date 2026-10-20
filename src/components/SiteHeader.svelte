@@ -178,20 +178,19 @@
 	nav a {
 		position: relative;
 		display: inline-flex;
-		padding: 0.5rem 0;
+		padding: 0.5rem 0.25rem;
 		color: var(--color-text-muted);
-		font-size: var(--text-xs);
-		font-weight: 600;
-		letter-spacing: var(--tracking-label);
+		font-size: var(--text-sm);
+		font-weight: 500;
 		text-decoration: none;
-		text-transform: uppercase;
+		transition: color var(--duration-fast) var(--ease-standard);
 	}
 	nav a::after {
 		position: absolute;
-		right: 0;
+		right: 0.25rem;
 		bottom: 0;
-		left: 0;
-		height: 1px;
+		left: 0.25rem;
+		height: 2px;
 		background: var(--color-accent);
 		content: '';
 		transform: scaleX(0);

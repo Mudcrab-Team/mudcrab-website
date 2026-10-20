@@ -208,10 +208,8 @@
 		outline: none;
 		background: transparent;
 		color: var(--color-text-muted);
-		font: 600 var(--text-xs) var(--font-body);
-		letter-spacing: 0.08em;
+		font: 500 var(--text-sm) var(--font-body);
 		text-align: left;
-		text-transform: uppercase;
 		cursor: pointer;
 	}
 	.theme-menu button:hover,

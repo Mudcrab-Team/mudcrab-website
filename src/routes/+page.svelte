@@ -239,22 +239,6 @@
 	</section>
 </main>
 
-<footer class="page-footer">
-	<p>
-		Mudcrab is an independent open-source project and is not affiliated with Bethesda Softworks,
-		ZeniMax Media, or Microsoft.
-	</p>
-	<div>
-		<Link href="https://github.com/realfakenerd/mudcrab" external>GitHub</Link>
-		<Link href="https://github.com/realfakenerd/mudcrab/blob/main/LICENSE-MIT" external
-			>MIT License</Link
-		>
-		<Link href="https://github.com/realfakenerd/mudcrab/blob/main/LICENSE-APACHE" external
-			>Apache 2.0</Link
-		>
-	</div>
-</footer>
-
 <style>
 	.hero-section {
 		position: relative;
@@ -459,29 +443,6 @@
 		max-width: 52rem;
 	}
 
-	.page-footer {
-		display: flex;
-		align-items: start;
-		justify-content: space-between;
-		gap: 2rem;
-		padding: 2rem 0 3rem;
-		border-top: 1px solid var(--color-border);
-		color: var(--color-text-muted);
-		font-size: var(--text-sm);
-	}
-
-	.page-footer p {
-		max-width: 48rem;
-		margin: 0;
-	}
-
-	.page-footer div {
-		display: flex;
-		flex-wrap: wrap;
-		justify-content: end;
-		gap: 1rem;
-	}
-
 	@media (max-width: 800px) {
 		.section {
 			padding-block: 3.5rem;
@@ -503,14 +464,6 @@
 		.pipeline-section,
 		.community-section {
 			padding-inline: 1.25rem;
-		}
-
-		.page-footer {
-			flex-direction: column;
-		}
-
-		.page-footer div {
-			justify-content: start;
 		}
 	}
 
