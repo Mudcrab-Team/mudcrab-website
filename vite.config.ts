@@ -1,5 +1,5 @@
 import tailwindcss from '@tailwindcss/vite';
-import adapter from '@sveltejs/adapter-netlify';
+import adapter from '@sveltejs/adapter-cloudflare';
 import { sveltekit } from '@sveltejs/kit/vite';
 import { ogygia } from 'ogygia/vite';
 import { defineConfig } from 'vite';

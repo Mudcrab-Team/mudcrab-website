@@ -48,12 +48,20 @@
 		flex: 0 0 auto;
 		place-items: center;
 		border: 1px solid var(--color-border-strong);
+		border-radius: 2px;
+		background: color-mix(in srgb, var(--color-surface) 85%, transparent);
 		color: var(--color-accent);
 		font: 1.25rem var(--font-display);
 		transform: rotate(45deg);
 		transition:
 			border-color var(--duration-normal) var(--ease-standard),
-			color var(--duration-normal) var(--ease-standard);
+			color var(--duration-normal) var(--ease-standard),
+			box-shadow var(--duration-normal) var(--ease-standard);
+	}
+	.brand-mark:hover .brand-symbol {
+		border-color: var(--color-accent);
+		color: var(--color-accent-hover);
+		box-shadow: 0 0 12px color-mix(in srgb, var(--color-accent) 25%, transparent);
 	}
 	.brand-symbol::first-letter {
 		display: block;
@@ -61,17 +69,18 @@
 	}
 	.brand-copy {
 		display: grid;
-		gap: 0.15rem;
+		gap: 0.1rem;
+		line-height: 1.15;
 	}
 	.brand-copy strong {
-		font: 600 var(--text-md) var(--font-display);
-		letter-spacing: var(--tracking-display);
+		font: 600 1.0625rem var(--font-display);
+		letter-spacing: 0.04em;
 	}
 	.brand-copy span {
 		color: var(--color-text-subtle);
+		font-family: var(--font-mono);
 		font-size: var(--text-xs);
-		letter-spacing: var(--tracking-label);
-		text-transform: uppercase;
+		letter-spacing: 0.02em;
 	}
 	.brand-mark.compact .brand-symbol {
 		width: 2.5rem;
