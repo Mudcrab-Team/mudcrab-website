@@ -87,7 +87,7 @@
 		themeStyle = document.createElement('style');
 		themeStyle.dataset.theme = selectedTheme;
 		themeStyle.textContent = css;
-		document.head.append(themeStyle);
+		document.head.appendChild(themeStyle);
 	});
 </script>
 
