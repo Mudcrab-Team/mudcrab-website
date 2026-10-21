@@ -49,13 +49,13 @@
 		<div class="actions">
 			<Button
 				variant="primary"
-				href="https://github.com/realfakenerd/mudcrab"
+				href="https://github.com/Mudcrab-Team/mudcrab"
 				target="_blank"
 				leading={githubIcon}>View on GitHub</Button
 			>
 			<Button
 				variant="secondary"
-				href="https://discord.gg/SnACRkduR"
+				href="https://discord.gg/29GRf8QShH"
 				target="_blank"
 				leading={discordIcon}>Join Discord</Button
 			>
@@ -77,7 +77,7 @@
 					The project translates original data into modern runtime formats, then runs it in a
 					Bevy-powered engine with a focus on performance, extensibility, and seamless exploration.
 				</p>
-				<Link href="https://github.com/realfakenerd/mudcrab/blob/main/LEGAL.md" external
+				<Link href="https://github.com/Mudcrab-Team/mudcrab/blob/main/LEGAL.md" external
 					>Read the legal notice</Link
 				>
 			</div>
@@ -104,25 +104,25 @@
 				variant="feature"
 				eyebrow="01 · Seamless world"
 				title="No loading screens"
-				description="Stream interiors, exteriors, and cities in real time so the world stays connected as you move through it."
+				description="Stream interiors, exteriors, and cities in real time with libSQL spatial R-Tree indexing and rkyv zero-copy memory mapping."
 			/>
 			<Card
 				variant="feature"
 				eyebrow="02 · Bevy + Rust"
-				title="A new runtime"
-				description="A modern engine foundation built in Rust with Bevy, prioritizing responsive performance and maintainable systems."
+				title="High-FPS rendering"
+				description="Batched instanced indirect draw calls reduce 5,000+ individual draws to under 100 per frame on Bevy 0.19."
 			/>
 			<Card
 				variant="feature"
-				eyebrow="03 · Luau"
-				title="Scripting for modders"
-				description="Sandboxed Luau scripting provides a fast, flexible foundation for gameplay systems and new kinds of mods."
+				eyebrow="03 · Luau Engine"
+				title="JIT scripting for modders"
+				description="Sandboxed Luau via mlua replaces single-threaded Papyrus with high-performance execution and async HTTP networking."
 			/>
 			<Card
 				variant="feature"
-				eyebrow="04 · Modern data"
-				title="Made to stream"
-				description="Legacy formats are converted into GPU-native and stream-friendly runtime assets for the engine to use efficiently."
+				eyebrow="04 · GPU-native data"
+				title="glTF 2.0 & KTX2"
+				description="Legacy .nif, .dds, and .esm records are converted into GPU-native glTF 2.0, KTX2 Basis Universal, and SQLite 3 formats."
 			/>
 		</div>
 	</section>
@@ -216,13 +216,13 @@
 		<div class="community-actions">
 			<Button
 				variant="primary"
-				href="https://github.com/realfakenerd/mudcrab"
+				href="https://github.com/Mudcrab-Team/mudcrab"
 				target="_blank"
 				leading={githubIcon}>Explore the repository</Button
 			>
 			<Button
 				variant="secondary"
-				href="https://github.com/realfakenerd/mudcrab/blob/main/CONTRIBUTING.md"
+				href="https://github.com/Mudcrab-Team/mudcrab/blob/main/CONTRIBUTING.md"
 				target="_blank">Read the contribution guide</Button
 			>
 		</div>

@@ -14,7 +14,7 @@
 				</p>
 				<div class="footer-status-pill">
 					<span class="status-dot" aria-hidden="true"></span>
-					<span class="status-text">Active Development · Rust 2024 / Bevy 0.15</span>
+					<span class="status-text">Active Development · Rust 2024 / Bevy 0.19</span>
 				</div>
 			</div>
 
@@ -27,7 +27,7 @@
 					</li>
 					<li>
 						<span class="matrix-label">Scripting</span>
-						<span class="matrix-value">Luau Sandbox</span>
+						<span class="matrix-value">Luau Sandbox (mlua)</span>
 					</li>
 					<li>
 						<span class="matrix-label">Streaming</span>
@@ -35,7 +35,7 @@
 					</li>
 					<li>
 						<span class="matrix-label">Licensing</span>
-						<span class="matrix-value">MIT / Apache 2.0</span>
+						<span class="matrix-value">GPL-3.0-or-later</span>
 					</li>
 				</ul>
 			</div>
@@ -44,13 +44,13 @@
 				<h4 class="col-title">Resources</h4>
 				<ul class="links-list">
 					<li>
-						<Link href="https://github.com/realfakenerd/mudcrab" external>Source Code (GitHub)</Link>
+						<Link href="https://github.com/Mudcrab-Team/mudcrab" external>Source Code (GitHub)</Link>
 					</li>
 					<li>
-						<Link href="https://discord.gg/SnACRkduR" external>Community Discord</Link>
+						<Link href="https://discord.gg/29GRf8QShH" external>Community Discord</Link>
 					</li>
 					<li>
-						<Link href="https://github.com/realfakenerd/mudcrab/blob/main/LEGAL.md" external>Legal Framework</Link>
+						<Link href="https://github.com/Mudcrab-Team/mudcrab/blob/main/LEGAL.md" external>Legal Framework</Link>
 					</li>
 					<li>
 						<Link href="/components">Component Showcase</Link>
