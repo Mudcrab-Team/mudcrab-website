@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { ChevronDown, X } from '@lucide/svelte';
+	import ChevronDown from '@lucide/svelte/icons/chevron-down';
+	import X from '@lucide/svelte/icons/x';
 	import { Dialog, Select } from 'bits-ui';
 	import { onMount } from 'svelte';
 

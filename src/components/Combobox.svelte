@@ -1,5 +1,8 @@
 <script lang="ts">
-	import { Check, ChevronDown, Search, X } from '@lucide/svelte';
+	import Check from '@lucide/svelte/icons/check';
+	import ChevronDown from '@lucide/svelte/icons/chevron-down';
+	import Search from '@lucide/svelte/icons/search';
+	import X from '@lucide/svelte/icons/x';
 	import { Combobox, Dialog } from 'bits-ui';
 	import { onMount } from 'svelte';
 

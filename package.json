@@ -1,19 +1,19 @@
 {
-  "name": "mudcrab-site",
+  "name": "mudcrab-website",
   "private": true,
   "version": "0.0.1",
   "type": "module",
   "scripts": {
     "dev": "vite dev",
     "build": "vite build",
-    "preview": "bun run build && wrangler dev",
+    "preview": "bun run build && bun wrangler dev",
     "prepare": "svelte-kit sync || echo ''",
     "check": "wrangler types --check && svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
     "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
     "lint": "prettier --check .",
     "format": "prettier --write .",
     "gen": "wrangler types",
-    "deploy": "bun run build && wrangler deploy",
+    "deploy": "bun run build && bun wrangler deploy",
     "cf-typegen": "wrangler types"
   },
   "devDependencies": {

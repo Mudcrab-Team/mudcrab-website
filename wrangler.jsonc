@@ -1,6 +1,6 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "mudcrab-site",
+  "name": "mudcrab-website",
   "compatibility_date": "2026-10-19",
   "main": ".svelte-kit/cloudflare/_worker.js",
   "assets": {
