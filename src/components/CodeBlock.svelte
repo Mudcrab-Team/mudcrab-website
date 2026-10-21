@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { Check, Clipboard } from '@lucide/svelte';
+	import Check from '@lucide/svelte/icons/check';
+	import Clipboard from '@lucide/svelte/icons/clipboard';
 	import hljs from 'highlight.js/lib/core';
 	import bash from 'highlight.js/lib/languages/bash';
 	import css from 'highlight.js/lib/languages/css';

@@ -1,5 +1,11 @@
 <script lang="ts">
-	import { AlertTriangle, ArrowRight, Check, Download, Info, Plus, X } from '@lucide/svelte';
+	import AlertTriangle from '@lucide/svelte/icons/alert-triangle';
+	import ArrowRight from '@lucide/svelte/icons/arrow-right';
+	import Check from '@lucide/svelte/icons/check';
+	import Download from '@lucide/svelte/icons/download';
+	import Info from '@lucide/svelte/icons/info';
+	import Plus from '@lucide/svelte/icons/plus';
+	import X from '@lucide/svelte/icons/x';
 	import Button from '../../components/Button.svelte';
 	import Link from '../../components/Link.svelte';
 	import Badge from '../../components/Badge.svelte';

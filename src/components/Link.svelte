@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { ArrowRight, ArrowUpRight } from '@lucide/svelte';
+	import ArrowRight from '@lucide/svelte/icons/arrow-right';
+	import ArrowUpRight from '@lucide/svelte/icons/arrow-up-right';
 	import type { Snippet } from 'svelte';
 
 	type Variant = 'default' | 'muted' | 'inline';

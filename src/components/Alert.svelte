@@ -1,5 +1,8 @@
 <script lang="ts">
-	import { AlertTriangle, CheckCircle2, Info, X } from '@lucide/svelte';
+	import AlertTriangle from '@lucide/svelte/icons/alert-triangle';
+	import CheckCircle2 from '@lucide/svelte/icons/check-circle-2';
+	import Info from '@lucide/svelte/icons/info';
+	import X from '@lucide/svelte/icons/x';
 	import type { Snippet } from 'svelte';
 
 	let {

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { X } from '@lucide/svelte';
+	import X from '@lucide/svelte/icons/x';
 	import { Dialog } from 'bits-ui';
 	import type { Snippet } from 'svelte';
 

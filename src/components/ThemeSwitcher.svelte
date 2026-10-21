@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { Palette, X } from '@lucide/svelte';
+	import Palette from '@lucide/svelte/icons/palette';
+	import X from '@lucide/svelte/icons/x';
 	import { Dialog } from 'bits-ui';
 	import { onMount } from 'svelte';
 
