@@ -11,6 +11,7 @@
 	let { children } = $props();
 	const navigation = $derived([
 		{ label: 'Home', href: '/', active: page.url.pathname === '/' },
+		{ label: 'Roadmap', href: '/roadmap', active: page.url.pathname === '/roadmap' },
 		{ label: 'Components', href: '/components', active: page.url.pathname === '/components' }
 	]);
 </script>
