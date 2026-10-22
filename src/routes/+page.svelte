@@ -203,6 +203,11 @@
 				</div>
 			</div>
 		</div>
+		<div class="roadmap-actions">
+			<Button variant="primary" href="/roadmap">
+				Explore Live Project Board
+			</Button>
+		</div>
 	</section>
 
 	<section class="section community-section" aria-labelledby="community-heading">
@@ -429,6 +434,11 @@
 		gap: 1rem;
 		padding: 1.25rem 0;
 		border-bottom: 1px solid var(--color-border);
+	}
+
+	.roadmap-actions {
+		display: flex;
+		margin-top: 2.5rem;
 	}
 
 	.community-section {

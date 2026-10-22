@@ -53,6 +53,9 @@
 						<Link href="https://github.com/Mudcrab-Team/mudcrab/blob/main/LEGAL.md" external>Legal Framework</Link>
 					</li>
 					<li>
+						<Link href="/roadmap">Project Roadmap</Link>
+					</li>
+					<li>
 						<Link href="/components">Component Showcase</Link>
 					</li>
 				</ul>
