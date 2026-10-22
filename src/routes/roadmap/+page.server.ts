@@ -50,6 +50,31 @@ export const load: PageServerLoad = async ({ fetch, setHeaders }) => {
 
 		const data = JSON.parse(match[1]);
 
+		// Extract status options from column definitions
+		const statusIdToName = new Map<string, KanbanCard['status']>();
+		statusIdToName.set('f75ad846', 'To do');
+		statusIdToName.set('47fc9ee4', 'In progress');
+		statusIdToName.set('1c9054e8', 'In Review');
+		statusIdToName.set('c6789d20', 'Merge Ready');
+		statusIdToName.set('98236657', 'Done');
+
+		const columnsMatch = html.match(
+			/<script type="application\/json" id="memex-columns-data">([\s\S]*?)<\/script>/
+		);
+		if (columnsMatch) {
+			try {
+				const cols = JSON.parse(columnsMatch[1]);
+				const statusCol = cols.find((c: { name: string }) => c.name === 'Status');
+				for (const opt of statusCol?.settings?.options || []) {
+					if (opt.id && opt.name) {
+						statusIdToName.set(opt.id, opt.name as KanbanCard['status']);
+					}
+				}
+			} catch (e) {
+				console.warn('Failed to parse memex-columns-data:', e);
+			}
+		}
+
 		const columnDefs: { name: KanbanCard['status']; color: string; id: string }[] = [
 			{ id: 'todo', name: 'To do', color: '#8b949e' },
 			{ id: 'in-progress', name: 'In progress', color: '#f85149' },
@@ -64,24 +89,17 @@ export const load: PageServerLoad = async ({ fetch, setHeaders }) => {
 		}
 
 		for (const group of data.groupedItems || []) {
-			let rawGroup = '';
-			try {
-				rawGroup = atob(group.groupId);
-			} catch {
-				rawGroup = group.groupId || '';
-			}
-
-			let status: KanbanCard['status'] = 'To do';
-			if (rawGroup.includes('In progress')) status = 'In progress';
-			else if (rawGroup.includes('In Review')) status = 'In Review';
-			else if (rawGroup.includes('Merge Ready')) status = 'Merge Ready';
-			else if (rawGroup.includes('Done')) status = 'Done';
-			else if (rawGroup.includes('To do')) status = 'To do';
-
-			const targetList = columnsMap.get(status);
-			if (!targetList) continue;
-
 			for (const node of group.nodes || []) {
+				const statusCol = node.memexProjectColumnValues?.find(
+					(c: { memexProjectColumnId: string }) => c.memexProjectColumnId === 'Status'
+				);
+				const statusId = statusCol?.value?.id;
+				const status: KanbanCard['status'] =
+					(statusId && statusIdToName.get(statusId)) || 'To do';
+
+				const targetList = columnsMap.get(status);
+				if (!targetList) continue;
+
 				const titleCol = node.memexProjectColumnValues?.find(
 					(c: { memexProjectColumnId: string }) => c.memexProjectColumnId === 'Title'
 				);
