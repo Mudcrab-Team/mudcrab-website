@@ -22,8 +22,7 @@
 					card.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
 					card.number.toString().includes(searchQuery.trim());
 
-				const matchesType =
-					selectedType === 'all' || card.type === selectedType;
+				const matchesType = selectedType === 'all' || card.type === selectedType;
 
 				return matchesSearch && matchesType;
 			});
@@ -109,10 +108,7 @@
 			</div>
 
 			<div class="progress-bar-container" aria-label="Project completion progress">
-				<div
-					class="progress-bar-fill"
-					style="width: {data.stats.completionRate}%"
-				></div>
+				<div class="progress-bar-fill" style="width: {data.stats.completionRate}%"></div>
 			</div>
 		</div>
 
@@ -173,10 +169,7 @@
 				<div class="kanban-column" data-status={column.id}>
 					<div class="column-header">
 						<div class="column-title-group">
-							<span
-								class="column-dot"
-								style="background-color: {column.color};"
-								aria-hidden="true"
+							<span class="column-dot" style="background-color: {column.color};" aria-hidden="true"
 							></span>
 							<h3>{column.name}</h3>
 						</div>
@@ -190,12 +183,7 @@
 							</div>
 						{:else}
 							{#each column.cards as card (card.id)}
-								<a
-									href={card.url}
-									target="_blank"
-									rel="noopener noreferrer"
-									class="kanban-card"
-								>
+								<a href={card.url} target="_blank" rel="noopener noreferrer" class="kanban-card">
 									<div class="card-top">
 										<span class="card-meta">
 											{#if card.type === 'PullRequest'}
@@ -472,7 +460,10 @@
 		border-radius: 6px;
 		text-decoration: none;
 		color: inherit;
-		transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+		transition:
+			transform 0.15s ease,
+			border-color 0.15s ease,
+			box-shadow 0.15s ease;
 	}
 
 	.kanban-card:hover {

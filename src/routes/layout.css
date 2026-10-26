@@ -15,7 +15,10 @@ html {
 body {
 	min-height: 100svh;
 	position: relative;
-	background-image:
-		radial-gradient(1100px 480px at 50% -120px, color-mix(in srgb, var(--color-accent) 4%, transparent), transparent 70%);
+	background-image: radial-gradient(
+		1100px 480px at 50% -120px,
+		color-mix(in srgb, var(--color-accent) 4%, transparent),
+		transparent 70%
+	);
 	background-repeat: no-repeat;
 }

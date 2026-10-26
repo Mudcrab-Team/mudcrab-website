@@ -26,7 +26,7 @@
 	import BrandMark from '../../components/BrandMark.svelte';
 	import SectionHeader from '../../components/SectionHeader.svelte';
 	import Divider from '../../components/Divider.svelte';
-		import EmptyState from '../../components/EmptyState.svelte';
+	import EmptyState from '../../components/EmptyState.svelte';
 
 	let searchValue = $state('');
 	let category = $state<string | undefined>(undefined);

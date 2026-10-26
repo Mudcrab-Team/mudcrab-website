@@ -204,9 +204,7 @@
 			</div>
 		</div>
 		<div class="roadmap-actions">
-			<Button variant="primary" href="/roadmap">
-				Explore Live Project Board
-			</Button>
+			<Button variant="primary" href="/roadmap">Explore Live Project Board</Button>
 		</div>
 	</section>
 

@@ -94,8 +94,7 @@ export const load: PageServerLoad = async ({ fetch, setHeaders }) => {
 					(c: { memexProjectColumnId: string }) => c.memexProjectColumnId === 'Status'
 				);
 				const statusId = statusCol?.value?.id;
-				const status: KanbanCard['status'] =
-					(statusId && statusIdToName.get(statusId)) || 'To do';
+				const status: KanbanCard['status'] = (statusId && statusIdToName.get(statusId)) || 'To do';
 
 				const targetList = columnsMap.get(status);
 				if (!targetList) continue;
