@@ -12,8 +12,12 @@
 	let latestRelease = $derived(data.releases?.[0]);
 	let otherReleases = $derived(data.releases?.slice(1) || []);
 
-	const installLinuxMac = `curl -fsSL https://raw.githubusercontent.com/Mudcrab-Team/mudcrab/main/scripts/install.sh | bash`;
-	const installWindows = `irm https://raw.githubusercontent.com/Mudcrab-Team/mudcrab/main/scripts/install.ps1 | iex`;
+	const installLinuxMac = `git clone https://github.com/Mudcrab-Team/mudcrab.git
+cd mudcrab
+cargo build --release`;
+	const installWindows = `git clone https://github.com/Mudcrab-Team/mudcrab.git
+cd mudcrab
+cargo build --release`;
 </script>
 
 <svelte:head>
@@ -25,7 +29,7 @@
 		<SectionHeader
 			eyebrow="Download"
 			title="Install Mudcrab"
-			description="Use our install scripts to download and set up the latest version of Mudcrab on your machine."
+			description="Clone and build Mudcrab from source on your machine."
 			align="center"
 		/>
 
@@ -33,7 +37,7 @@
 			<Card variant="default">
 				{#snippet children()}
 					<h3>Linux & macOS</h3>
-					<p>Run this command in your terminal to install or update.</p>
+					<p>Run this command in your terminal to build from source.</p>
 					<div class="code-container">
 						<CodeBlock code={installLinuxMac} language="bash" />
 					</div>
@@ -43,7 +47,7 @@
 			<Card variant="default">
 				{#snippet children()}
 					<h3>Windows</h3>
-					<p>Run this command in PowerShell to install or update.</p>
+					<p>Run this command in PowerShell to build from source.</p>
 					<div class="code-container">
 						<CodeBlock code={installWindows} language="powershell" />
 					</div>

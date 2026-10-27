@@ -18,11 +18,6 @@ interface Release {
 }
 
 export const load: PageServerLoad = async ({ fetch, setHeaders }) => {
-	// Cache on Cloudflare CDN for 5 minutes, client for 1 minute
-	setHeaders({
-		'cache-control': 'public, max-age=60, s-maxage=300'
-	});
-
 	try {
 		const res = await fetch('https://api.github.com/repos/Mudcrab-Team/mudcrab/releases', {
 			headers: {
@@ -36,9 +31,17 @@ export const load: PageServerLoad = async ({ fetch, setHeaders }) => {
 		}
 
 		const releases: Release[] = await res.json();
+
+		// Cache on Cloudflare CDN for 5 minutes, client for 1 minute
+		setHeaders({
+			'cache-control': 'public, max-age=60, s-maxage=300'
+		});
 		return { releases };
 	} catch (err) {
 		console.error('Failed to load GitHub Releases:', err);
+		setHeaders({
+			'cache-control': 'no-store'
+		});
 		return { releases: [], error: 'Failed to load releases' };
 	}
 };
