@@ -17,7 +17,11 @@
 	const themes = [
 		{ value: 'default', label: 'Mudcrab' },
 		...Object.keys(themeStyles).map((path) => {
-			const value = path.split('/').pop()?.replace(/\.css$/, '') ?? path;
+			const value =
+				path
+					.split('/')
+					.pop()
+					?.replace(/\.css$/, '') ?? path;
 			return {
 				value,
 				label:

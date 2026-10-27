@@ -9,8 +9,8 @@
 			<div class="footer-brand-col">
 				<BrandMark subtitle="Skyrim Bevy Engine" />
 				<p class="footer-mission">
-					An independent, open-source reimplementation of Skyrim Special Edition built in Rust
-					and Bevy. Rebuilt for continuous world streaming without cell load doors.
+					An independent, open-source reimplementation of Skyrim Special Edition built in Rust and
+					Bevy. Rebuilt for continuous world streaming without cell load doors.
 				</p>
 				<div class="footer-status-pill">
 					<span class="status-dot" aria-hidden="true"></span>
@@ -44,13 +44,16 @@
 				<h4 class="col-title">Resources</h4>
 				<ul class="links-list">
 					<li>
-						<Link href="https://github.com/Mudcrab-Team/mudcrab" external>Source Code (GitHub)</Link>
+						<Link href="https://github.com/Mudcrab-Team/mudcrab" external>Source Code (GitHub)</Link
+						>
 					</li>
 					<li>
 						<Link href="https://discord.gg/29GRf8QShH" external>Community Discord</Link>
 					</li>
 					<li>
-						<Link href="https://github.com/Mudcrab-Team/mudcrab/blob/main/LEGAL.md" external>Legal Framework</Link>
+						<Link href="https://github.com/Mudcrab-Team/mudcrab/blob/main/LEGAL.md" external
+							>Legal Framework</Link
+						>
 					</li>
 					<li>
 						<Link href="/roadmap">Project Roadmap</Link>
@@ -69,12 +72,12 @@
 		<div class="footer-bottom">
 			<div class="footer-legal">
 				<p>
-					Mudcrab is an independent open-source engine recreation and is not affiliated with, endorsed by, or connected to
-					Bethesda Softworks, ZeniMax Media, or Microsoft.
+					Mudcrab is an independent open-source engine recreation and is not affiliated with,
+					endorsed by, or connected to Bethesda Softworks, ZeniMax Media, or Microsoft.
 				</p>
 				<p class="legal-byo">
-					No proprietary assets, textures, meshes, or audio are included. Users provide source data from their own legally acquired
-					copy of The Elder Scrolls V: Skyrim Special Edition.
+					No proprietary assets, textures, meshes, or audio are included. Users provide source data
+					from their own legally acquired copy of The Elder Scrolls V: Skyrim Special Edition.
 				</p>
 			</div>
 			<div class="footer-meta">
