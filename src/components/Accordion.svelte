@@ -89,14 +89,14 @@
 		border: 0;
 		outline: none;
 		background: transparent;
-		color: var(--color-text-muted);
-		font: 600 var(--text-sm) var(--font-body);
+		color: var(--color-text);
+		font: 600 var(--text-body) var(--font-body);
 		text-align: left;
 		cursor: pointer;
 		transition: color var(--duration-normal) var(--ease-standard);
 	}
 	:global(.accordion-trigger:hover:not(:disabled)) {
-		color: var(--color-text);
+		color: var(--color-accent);
 	}
 	:global(.accordion-trigger:focus-visible) {
 		color: var(--color-accent);
@@ -116,11 +116,11 @@
 		color: var(--color-accent);
 	}
 	:global(.accordion-content) {
-		max-width: 42rem;
+		max-width: 65ch;
 		overflow: hidden;
-		padding: 0 2rem 1rem 0;
+		padding: 0 2rem 1.25rem 0;
 		color: var(--color-text-muted);
-		font-size: var(--text-sm);
-		line-height: 1.6;
+		font-size: var(--text-body);
+		line-height: var(--leading-normal);
 	}
 </style>

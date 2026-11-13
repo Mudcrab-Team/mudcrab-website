@@ -73,19 +73,19 @@
 		display: inline-flex;
 		align-items: center;
 		justify-content: center;
-		gap: 0.6rem;
-		min-height: 2.5rem;
-		padding: 0.65rem 1rem;
+		gap: 0.55rem;
+		min-height: 2.625rem;
+		padding: 0.65rem 1.15rem;
 		border: 1px solid var(--color-border-strong);
 		border-radius: var(--radius-sm);
-		background: transparent;
+		background: color-mix(in srgb, var(--color-surface) 80%, transparent);
 		color: var(--color-text);
-		font-size: var(--text-xs);
+		font-size: var(--text-sm);
 		font-weight: 600;
-		letter-spacing: 0.1em;
-		line-height: 1;
+		letter-spacing: 0.01em;
+		line-height: 1.1;
 		text-decoration: none;
-		text-transform: uppercase;
+		white-space: nowrap;
 		cursor: pointer;
 		transition:
 			background var(--duration-normal) var(--ease-standard),
@@ -95,8 +95,9 @@
 	}
 
 	.button:hover:not(:disabled) {
-		border-color: var(--color-accent);
+		border-color: var(--color-steel-bright);
 		background: var(--color-surface-hover);
+		color: var(--color-text);
 		transform: translateY(-1px);
 	}
 
@@ -113,15 +114,18 @@
 	.primary:hover:not(:disabled) {
 		border-color: var(--color-accent-hover);
 		background: var(--color-accent-hover);
+		color: var(--color-accent-ink);
 	}
 
 	.ghost {
 		border-color: transparent;
-		color: var(--color-accent);
+		background: transparent;
+		color: var(--color-steel-bright);
 	}
 
 	.ghost:hover:not(:disabled) {
 		border-color: var(--color-border);
+		background: var(--color-surface);
 	}
 
 	.danger {
@@ -141,17 +145,21 @@
 	}
 
 	.sm {
-		min-height: 2rem;
-		padding: 0.5rem 0.75rem;
+		min-height: 2.125rem;
+		padding: 0.5rem 0.85rem;
 	}
+
 	.lg {
 		min-height: 3rem;
-		padding: 0.8rem 1.25rem;
+		padding: 0.85rem 1.4rem;
+		font-size: var(--text-body);
 	}
+
 	.icon-only.sm {
 		width: 2rem;
 		min-width: 2rem;
 	}
+
 	.icon-only.lg {
 		width: 3rem;
 		min-width: 3rem;
@@ -164,26 +172,22 @@
 		align-items: center;
 		justify-content: center;
 	}
+
 	.icon :global(svg),
 	.icon :global(img) {
 		width: 1rem;
 		height: 1rem;
 	}
+
 	.icon :global(img) {
 		display: block;
 	}
+
 	.icon-only :global(svg) {
 		width: 1.1rem;
 		height: 1.1rem;
 	}
-	.icon-only.sm :global(svg) {
-		width: 1.05rem;
-		height: 1.05rem;
-	}
-	.icon-only.lg :global(svg) {
-		width: 1.2rem;
-		height: 1.2rem;
-	}
+
 	.spinner {
 		width: 0.9rem;
 		height: 0.9rem;
@@ -203,6 +207,7 @@
 			transform: rotate(360deg);
 		}
 	}
+
 	@media (prefers-reduced-motion: reduce) {
 		.spinner {
 			animation: none;

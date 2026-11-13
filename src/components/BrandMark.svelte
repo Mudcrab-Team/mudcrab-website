@@ -15,7 +15,9 @@
 </script>
 
 <a class="brand-mark {className}" class:compact {href} aria-label={compact ? name : undefined}>
-	<span class="brand-symbol" aria-hidden="true">ᛉ</span>
+	<span class="brand-emblem" aria-hidden="true">
+		<img src="/brand/mudcrab-mark.png" alt="" width="34" height="23" />
+	</span>
 	{#if !compact}
 		<span class="brand-copy">
 			<strong>{name}</strong>
@@ -28,62 +30,68 @@
 	.brand-mark {
 		display: inline-flex;
 		align-items: center;
-		gap: 0.8rem;
+		gap: 0.75rem;
 		width: fit-content;
 		color: var(--color-text);
 		text-decoration: none;
 	}
-	.brand-mark:hover .brand-symbol {
-		border-color: var(--color-accent);
-		color: var(--color-accent-hover);
-	}
+
 	.brand-mark:focus-visible {
-		outline: none;
-		box-shadow: var(--focus-ring);
+		outline: 2px solid var(--color-border-focus);
+		outline-offset: 4px;
+		border-radius: var(--radius-sm);
 	}
-	.brand-symbol {
+
+	.brand-emblem {
 		display: grid;
-		width: 2.25rem;
-		height: 2.25rem;
-		flex: 0 0 auto;
 		place-items: center;
-		border: 1px solid var(--color-border-strong);
-		border-radius: 2px;
-		background: color-mix(in srgb, var(--color-surface) 85%, transparent);
-		color: var(--color-accent);
-		font: 1.25rem var(--font-display);
-		transform: rotate(45deg);
+		width: 2.65rem;
+		height: 2.35rem;
+		flex: 0 0 auto;
+		padding: 0.28rem;
+		border: 1px solid color-mix(in srgb, var(--color-steel) 55%, transparent);
+		border-radius: var(--radius-md);
+		background: var(--color-emblem-bg);
+		box-shadow: 0 2px 10px rgb(0 0 0 / 0.25);
 		transition:
 			border-color var(--duration-normal) var(--ease-standard),
-			color var(--duration-normal) var(--ease-standard),
-			box-shadow var(--duration-normal) var(--ease-standard);
+			transform var(--duration-normal) var(--ease-standard);
 	}
-	.brand-mark:hover .brand-symbol {
-		border-color: var(--color-accent);
-		color: var(--color-accent-hover);
-		box-shadow: 0 0 12px color-mix(in srgb, var(--color-accent) 25%, transparent);
-	}
-	.brand-symbol::first-letter {
+
+	.brand-emblem img {
 		display: block;
-		transform: rotate(-45deg);
+		width: 100%;
+		height: auto;
+		object-fit: contain;
 	}
+
+	.brand-mark:hover .brand-emblem {
+		border-color: var(--color-accent);
+		transform: translateY(-1px);
+	}
+
 	.brand-copy {
 		display: grid;
 		gap: 0.1rem;
-		line-height: 1.15;
+		line-height: 1.1;
 	}
+
 	.brand-copy strong {
-		font: 600 1.0625rem var(--font-display);
-		letter-spacing: 0.04em;
+		font-family: var(--font-display);
+		font-size: 1.25rem;
+		font-weight: 700;
+		letter-spacing: 0.03em;
+		color: var(--color-text);
 	}
+
 	.brand-copy span {
 		color: var(--color-text-subtle);
-		font-family: var(--font-mono);
-		font-size: var(--text-xs);
-		letter-spacing: 0.02em;
+		font-size: var(--text-sm);
+		font-weight: 400;
 	}
-	.brand-mark.compact .brand-symbol {
-		width: 2.5rem;
-		height: 2.5rem;
+
+	.brand-mark.compact .brand-emblem {
+		width: 2.75rem;
+		height: 2.75rem;
 	}
 </style>

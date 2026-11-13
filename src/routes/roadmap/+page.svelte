@@ -1,11 +1,9 @@
 <script lang="ts">
-	import Badge from '../../components/Badge.svelte';
-	import Button from '../../components/Button.svelte';
-	import SectionHeader from '../../components/SectionHeader.svelte';
 	import ExternalLink from '@lucide/svelte/icons/external-link';
 	import GitPullRequest from '@lucide/svelte/icons/git-pull-request';
 	import CircleDot from '@lucide/svelte/icons/circle-dot';
 	import Search from '@lucide/svelte/icons/search';
+	import Button from '../../components/Button.svelte';
 	import type { PageData } from './$types';
 
 	let { data }: { data: PageData } = $props();
@@ -13,7 +11,6 @@
 	let searchQuery = $state('');
 	let selectedType = $state<'all' | 'Issue' | 'PullRequest'>('all');
 
-	// Filter columns and cards dynamically
 	const filteredColumns = $derived(
 		data.columns.map((col) => {
 			const filteredCards = col.cards.filter((card) => {
@@ -33,6 +30,20 @@
 			};
 		})
 	);
+
+	function columnAccent(id: string): string {
+		switch (id) {
+			case 'in-progress':
+				return 'var(--color-accent)';
+			case 'in-review':
+				return 'var(--color-steel-bright)';
+			case 'merge-ready':
+			case 'done':
+				return 'var(--color-success)';
+			default:
+				return 'var(--color-text-subtle)';
+		}
+	}
 
 	function formatRelativeTime(dateString: string): string {
 		try {
@@ -55,10 +66,10 @@
 </script>
 
 <svelte:head>
-	<title>Roadmap & Project Board · Mudcrab Engine</title>
+	<title>Roadmap and Project Board · Mudcrab</title>
 	<meta
 		name="description"
-		content="Live development roadmap and task board synchronized directly from the Mudcrab GitHub Project."
+		content="Live development roadmap and task board synchronized from the Mudcrab GitHub Project."
 	/>
 </svelte:head>
 
@@ -69,11 +80,13 @@
 <div class="roadmap-page">
 	<header class="roadmap-header">
 		<div class="header-content">
-			<SectionHeader
-				eyebrow="Live Project Board"
-				title="Development Roadmap"
-				description="Track ongoing engine systems, asset converters, and pull requests in real time. Synchronized with the official GitHub Project."
-			/>
+			<div class="header-title">
+				<h1>Development roadmap</h1>
+				<p>
+					Track ongoing engine subsystems, asset converters, and open pull requests synchronized
+					from the Mudcrab GitHub Project.
+				</p>
+			</div>
 			<div class="header-actions">
 				<Button
 					variant="primary"
@@ -81,20 +94,19 @@
 					target="_blank"
 					trailing={externalLinkIcon}
 				>
-					View on GitHub
+					Open GitHub board
 				</Button>
 			</div>
 		</div>
 
-		<!-- Progress and Stats Summary -->
 		<div class="stats-card">
 			<div class="stats-grid">
 				<div class="stat-item">
-					<span class="stat-label">Total Tracked</span>
+					<span class="stat-label">Total tracked</span>
 					<span class="stat-value">{data.stats.total}</span>
 				</div>
 				<div class="stat-item">
-					<span class="stat-label">In Progress</span>
+					<span class="stat-label">In progress</span>
 					<span class="stat-value stat-progress">{data.stats.inProgress}</span>
 				</div>
 				<div class="stat-item">
@@ -102,7 +114,7 @@
 					<span class="stat-value stat-done">{data.stats.done}</span>
 				</div>
 				<div class="stat-item">
-					<span class="stat-label">Progress</span>
+					<span class="stat-label">Completion</span>
 					<span class="stat-value">{data.stats.completionRate}%</span>
 				</div>
 			</div>
@@ -112,74 +124,73 @@
 			</div>
 		</div>
 
-		<!-- Controls & Search Toolbar -->
 		<div class="toolbar">
 			<div class="search-box">
 				<Search class="search-icon" size={16} aria-hidden="true" />
 				<input
 					type="search"
-					placeholder="Search tasks, issues or PR #..."
+					placeholder="Filter by title or #number..."
 					bind:value={searchQuery}
 					class="search-input"
 					aria-label="Filter tasks"
 				/>
 			</div>
 
-			<div class="filter-pills" role="radiogroup" aria-label="Filter by type">
+			<div class="filter-tabs" role="tablist" aria-label="Filter by item type">
 				<button
 					type="button"
-					class="filter-pill"
+					class="filter-tab"
 					class:active={selectedType === 'all'}
 					onclick={() => (selectedType = 'all')}
-					aria-checked={selectedType === 'all'}
-					role="radio"
+					aria-selected={selectedType === 'all'}
+					role="tab"
 				>
-					All Tasks
+					All items
 				</button>
 				<button
 					type="button"
-					class="filter-pill"
+					class="filter-tab"
 					class:active={selectedType === 'Issue'}
 					onclick={() => (selectedType = 'Issue')}
-					aria-checked={selectedType === 'Issue'}
-					role="radio"
+					aria-selected={selectedType === 'Issue'}
+					role="tab"
 				>
-					<CircleDot size={13} aria-hidden="true" />
 					Issues
 				</button>
 				<button
 					type="button"
-					class="filter-pill"
+					class="filter-tab"
 					class:active={selectedType === 'PullRequest'}
 					onclick={() => (selectedType = 'PullRequest')}
-					aria-checked={selectedType === 'PullRequest'}
-					role="radio"
+					aria-selected={selectedType === 'PullRequest'}
+					role="tab"
 				>
-					<GitPullRequest size={13} aria-hidden="true" />
-					Pull Requests
+					Pull requests
 				</button>
 			</div>
 		</div>
 	</header>
 
-	<!-- Interactive Kanban Board -->
 	<section class="kanban-container" aria-label="Roadmap Kanban Board">
 		<div class="kanban-track">
 			{#each filteredColumns as column (column.id)}
 				<div class="kanban-column" data-status={column.id}>
 					<div class="column-header">
 						<div class="column-title-group">
-							<span class="column-dot" style="background-color: {column.color};" aria-hidden="true"
+							<span
+								class="column-dot"
+								style="background-color: {columnAccent(column.id)};"
+								aria-hidden="true"
 							></span>
 							<h3>{column.name}</h3>
 						</div>
-						<Badge tone="neutral" size="sm">{column.cards.length}</Badge>
+						<span class="column-count">{column.cards.length}</span>
 					</div>
 
 					<div class="column-cards">
 						{#if column.cards.length === 0}
 							<div class="column-empty">
-								<p>No items in this stage</p>
+								<p>No items match the current filter.</p>
 							</div>
 						{:else}
 							{#each column.cards as card (card.id)}
@@ -187,14 +198,14 @@
 									<div class="card-top">
 										<span class="card-meta">
 											{#if card.type === 'PullRequest'}
-												<GitPullRequest size={13} class="icon-pr" aria-label="Pull Request" />
+												<GitPullRequest size={14} class="icon-pr" aria-label="Pull request" />
 												<span>PR #{card.number}</span>
 											{:else}
-												<CircleDot size={13} class="icon-issue" aria-label="Issue" />
+												<CircleDot size={14} class="icon-issue" aria-label="Issue" />
 												<span>#{card.number}</span>
 											{/if}
 										</span>
-										<ExternalLink size={12} class="card-link-icon" aria-hidden="true" />
+										<ExternalLink size={13} class="card-link-icon" aria-hidden="true" />
 									</div>
 
 									<p class="card-title">{card.title}</p>
@@ -217,45 +228,52 @@
 	.roadmap-page {
 		display: flex;
 		flex-direction: column;
-		gap: 2.5rem;
-		padding: 2.5rem 0 5rem;
+		gap: 2.25rem;
+		padding-top: 2.5rem;
 	}
 
 	.roadmap-header {
 		display: flex;
 		flex-direction: column;
-		gap: 2rem;
+		gap: 1.75rem;
 	}
 
 	.header-content {
 		display: flex;
-		align-items: flex-start;
+		align-items: flex-end;
 		justify-content: space-between;
 		gap: 2rem;
 		flex-wrap: wrap;
 	}
 
-	.header-actions {
-		display: flex;
-		align-items: center;
-		margin-top: 1rem;
+	.header-title {
+		max-width: 44rem;
 	}
 
-	/* Stats Card */
+	.header-title h1 {
+		font-size: clamp(2.1rem, 4vw, 3.25rem);
+		line-height: 1.04;
+		margin-bottom: 0.85rem;
+	}
+
+	.header-actions {
+		flex: 0 0 auto;
+	}
+
 	.stats-card {
 		display: flex;
 		flex-direction: column;
-		gap: 1.25rem;
+		gap: 1.15rem;
 		padding: 1.5rem 1.75rem;
-		background-color: var(--surface-1);
-		border: 1px solid var(--border-subtle);
-		border-radius: 8px;
-		box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+		background-color: var(--color-surface);
+		border: 1px solid var(--color-border);
+		border-radius: var(--radius-md);
+		box-shadow: var(--shadow-sm);
 	}
 
 	.stats-grid {
 		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+		grid-template-columns: repeat(4, minmax(110px, 1fr));
 		gap: 1.5rem;
 	}
 
@@ -266,44 +284,42 @@
 	}
 
 	.stat-label {
-		font-size: 0.75rem;
-		text-transform: uppercase;
-		letter-spacing: 0.08em;
-		color: var(--text-muted);
+		font-size: var(--text-sm);
+		color: var(--color-text-subtle);
 		font-weight: 500;
 	}
 
 	.stat-value {
 		font-family: var(--font-display);
-		font-size: 1.75rem;
+		font-size: var(--text-heading);
 		font-weight: 600;
-		color: var(--text-base);
+		color: var(--color-text);
+		font-variant-numeric: tabular-nums;
 	}
 
 	.stat-progress {
-		color: #f87171;
+		color: var(--color-accent);
 	}
 
 	.stat-done {
-		color: #a78bfa;
+		color: var(--color-success);
 	}
 
 	.progress-bar-container {
 		height: 6px;
 		width: 100%;
-		background-color: var(--surface-2);
-		border-radius: 9999px;
+		background-color: var(--color-surface-inset);
+		border-radius: var(--radius-pill);
 		overflow: hidden;
 	}
 
 	.progress-bar-fill {
 		height: 100%;
-		background: linear-gradient(90deg, #38bdf8 0%, #a78bfa 100%);
-		border-radius: 9999px;
-		transition: width 0.4s ease-out;
+		background: linear-gradient(90deg, var(--color-steel) 0%, var(--color-accent) 100%);
+		border-radius: var(--radius-pill);
+		transition: width var(--duration-slow) var(--ease-standard);
 	}
 
-	/* Toolbar & Search */
 	.toolbar {
 		display: flex;
 		align-items: center;
@@ -315,8 +331,8 @@
 	.search-box {
 		position: relative;
 		flex: 1;
-		min-width: 260px;
-		max-width: 450px;
+		min-width: 240px;
+		max-width: 28rem;
 	}
 
 	:global(.search-icon) {
@@ -324,84 +340,87 @@
 		left: 0.875rem;
 		top: 50%;
 		transform: translateY(-50%);
-		color: var(--text-muted);
+		color: var(--color-text-subtle);
 		pointer-events: none;
 	}
 
 	.search-input {
 		width: 100%;
-		padding: 0.625rem 0.875rem 0.625rem 2.5rem;
-		font-size: 0.875rem;
-		background-color: var(--surface-1);
-		border: 1px solid var(--border-subtle);
-		border-radius: 6px;
-		color: var(--text-base);
+		padding: 0.6rem 0.875rem 0.6rem 2.5rem;
+		font-size: var(--text-sm);
+		background-color: var(--color-surface);
+		border: 1px solid var(--color-border);
+		border-radius: var(--radius-sm);
+		color: var(--color-text);
 		outline: none;
-		transition: border-color 0.15s ease;
+		transition:
+			border-color var(--duration-fast) var(--ease-standard),
+			box-shadow var(--duration-fast) var(--ease-standard);
+	}
+
+	.search-input::placeholder {
+		color: var(--color-text-subtle);
 	}
 
 	.search-input:focus {
-		border-color: var(--accent);
-		box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.15);
+		border-color: var(--color-border-focus);
+		box-shadow: var(--focus-ring);
 	}
 
-	.filter-pills {
-		display: flex;
-		gap: 0.5rem;
-		background-color: var(--surface-1);
-		padding: 0.25rem;
-		border: 1px solid var(--border-subtle);
-		border-radius: 6px;
-	}
-
-	.filter-pill {
+	.filter-tabs {
 		display: inline-flex;
-		align-items: center;
-		gap: 0.375rem;
-		padding: 0.375rem 0.75rem;
-		font-size: 0.8125rem;
-		color: var(--text-muted);
+		padding: 0.25rem;
+		border: 1px solid var(--color-border-strong);
+		border-radius: var(--radius-md);
+		background: var(--color-surface);
+	}
+
+	.filter-tab {
+		padding: 0.45rem 0.9rem;
+		font-size: var(--text-sm);
+		color: var(--color-text-muted);
 		background: transparent;
-		border: none;
-		border-radius: 4px;
+		border: 0;
+		border-radius: var(--radius-sm);
 		cursor: pointer;
-		font-weight: 500;
-		transition: all 0.15s ease;
+		font-weight: 600;
+		transition:
+			background var(--duration-fast) var(--ease-standard),
+			color var(--duration-fast) var(--ease-standard);
 	}
 
-	.filter-pill:hover {
-		color: var(--text-base);
+	.filter-tab:hover {
+		color: var(--color-text);
 	}
 
-	.filter-pill.active {
-		background-color: var(--surface-2);
-		color: var(--text-base);
+	.filter-tab.active {
+		background-color: var(--color-accent);
+		color: var(--color-accent-ink);
 	}
 
-	/* Kanban Board Layout */
 	.kanban-container {
 		width: 100%;
 		overflow-x: auto;
-		padding-bottom: 1.5rem;
+		padding-bottom: 1rem;
 		-webkit-overflow-scrolling: touch;
 	}
 
 	.kanban-track {
 		display: grid;
-		grid-template-columns: repeat(5, minmax(280px, 1fr));
-		gap: 1.25rem;
-		min-width: 1300px;
+		grid-template-columns: repeat(5, minmax(215px, 1fr));
+		gap: 1rem;
+		min-width: 1120px;
 	}
 
 	.kanban-column {
 		display: flex;
 		flex-direction: column;
-		gap: 1rem;
-		background-color: rgba(18, 22, 28, 0.6);
-		border: 1px solid var(--border-subtle);
-		border-radius: 8px;
-		padding: 1.125rem 1rem;
-		min-height: 520px;
+		gap: 0.9rem;
+		background-color: var(--color-background-soft);
+		border: 1px solid var(--color-border);
+		border-radius: var(--radius-md);
+		padding: 1rem;
+		min-height: 460px;
 	}
 
 	.column-header {
@@ -409,13 +428,13 @@
 		align-items: center;
 		justify-content: space-between;
 		padding-bottom: 0.75rem;
-		border-bottom: 1px solid var(--border-subtle);
+		border-bottom: 1px solid var(--color-border);
 	}
 
 	.column-title-group {
 		display: flex;
 		align-items: center;
-		gap: 0.625rem;
+		gap: 0.6rem;
 	}
 
 	.column-dot {
@@ -425,11 +444,16 @@
 	}
 
 	.column-header h3 {
-		font-size: 0.875rem;
+		font-size: var(--text-sm);
 		font-weight: 600;
-		text-transform: uppercase;
-		letter-spacing: 0.05em;
-		color: var(--text-base);
+		color: var(--color-text);
+	}
+
+	.column-count {
+		color: var(--color-text-subtle);
+		font-size: var(--text-sm);
+		font-weight: 600;
+		font-variant-numeric: tabular-nums;
 	}
 
 	.column-cards {
@@ -437,47 +461,48 @@
 		flex-direction: column;
 		gap: 0.75rem;
 		overflow-y: auto;
-		max-height: 720px;
-		padding-right: 0.25rem;
+		max-height: 680px;
+		padding-right: 0.2rem;
 	}
 
 	.column-empty {
-		padding: 2.5rem 1rem;
+		padding: 2rem 0.75rem;
 		text-align: center;
-		color: var(--text-muted);
-		font-size: 0.8125rem;
-		font-style: italic;
 	}
 
-	/* Kanban Card */
+	.column-empty p {
+		color: var(--color-text-subtle);
+		font-size: var(--text-sm);
+	}
+
 	.kanban-card {
 		display: flex;
 		flex-direction: column;
-		gap: 0.625rem;
-		padding: 0.875rem 1rem;
-		background-color: var(--surface-1);
-		border: 1px solid var(--border-subtle);
-		border-radius: 6px;
+		gap: 0.55rem;
+		padding: 0.9rem 1rem;
+		background-color: var(--color-surface);
+		border: 1px solid var(--color-border);
+		border-radius: var(--radius-sm);
 		text-decoration: none;
 		color: inherit;
 		transition:
-			transform 0.15s ease,
-			border-color 0.15s ease,
-			box-shadow 0.15s ease;
+			transform var(--duration-fast) var(--ease-standard),
+			border-color var(--duration-fast) var(--ease-standard),
+			background-color var(--duration-fast) var(--ease-standard);
 	}
 
 	.kanban-card:hover {
 		transform: translateY(-2px);
-		border-color: var(--accent);
-		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+		border-color: var(--color-steel-bright);
+		background-color: var(--color-surface-raised);
 	}
 
 	.card-top {
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-		font-size: 0.75rem;
-		color: var(--text-muted);
+		font-size: var(--text-sm);
+		color: var(--color-text-subtle);
 	}
 
 	.card-meta {
@@ -488,26 +513,27 @@
 	}
 
 	:global(.icon-pr) {
-		color: #38bdf8;
+		color: var(--color-steel-bright);
 	}
 
 	:global(.icon-issue) {
-		color: #4ade80;
+		color: var(--color-success);
 	}
 
 	:global(.card-link-icon) {
 		opacity: 0;
-		transition: opacity 0.15s ease;
+		transition: opacity var(--duration-fast) var(--ease-standard);
 	}
 
 	.kanban-card:hover :global(.card-link-icon) {
-		opacity: 0.8;
+		opacity: 0.85;
 	}
 
 	.card-title {
-		font-size: 0.875rem;
+		margin: 0;
+		font-size: var(--text-sm);
 		line-height: 1.45;
-		color: var(--text-base);
+		color: var(--color-text);
 		font-weight: 500;
 		display: -webkit-box;
 		-webkit-line-clamp: 3;
@@ -522,21 +548,18 @@
 		justify-content: space-between;
 		margin-top: 0.25rem;
 		padding-top: 0.5rem;
-		border-top: 1px solid rgba(255, 255, 255, 0.05);
-		font-size: 0.6875rem;
-		color: var(--text-muted);
+		border-top: 1px solid color-mix(in srgb, var(--color-border) 65%, transparent);
+		font-size: var(--text-sm);
+		color: var(--color-text-subtle);
 	}
 
 	.card-repo {
-		background-color: var(--surface-2);
-		padding: 0.125rem 0.375rem;
-		border-radius: 4px;
-		font-family: monospace;
+		color: var(--color-steel-bright);
 	}
 
-	@media (max-width: 900px) {
-		.kanban-track {
-			grid-template-columns: repeat(5, 260px);
+	@media (max-width: 720px) {
+		.stats-grid {
+			grid-template-columns: repeat(2, 1fr);
 		}
 	}
 </style>

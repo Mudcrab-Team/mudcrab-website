@@ -4,14 +4,24 @@
 	import hljs from 'highlight.js/lib/core';
 	import bash from 'highlight.js/lib/languages/bash';
 	import css from 'highlight.js/lib/languages/css';
+	import ini from 'highlight.js/lib/languages/ini';
 	import javascript from 'highlight.js/lib/languages/javascript';
 	import json from 'highlight.js/lib/languages/json';
+	import lua from 'highlight.js/lib/languages/lua';
+	import powershell from 'highlight.js/lib/languages/powershell';
+	import rust from 'highlight.js/lib/languages/rust';
 	import typescript from 'highlight.js/lib/languages/typescript';
+
 	hljs.registerLanguage('bash', bash);
 	hljs.registerLanguage('css', css);
+	hljs.registerLanguage('ini', ini);
 	hljs.registerLanguage('javascript', javascript);
 	hljs.registerLanguage('js', javascript);
 	hljs.registerLanguage('json', json);
+	hljs.registerLanguage('lua', lua);
+	hljs.registerLanguage('luau', lua);
+	hljs.registerLanguage('powershell', powershell);
+	hljs.registerLanguage('rust', rust);
 	hljs.registerLanguage('typescript', typescript);
 	hljs.registerLanguage('ts', typescript);
 
@@ -84,118 +94,138 @@
 		min-width: 0;
 		max-width: 100%;
 		overflow: hidden;
-		border: 1px solid var(--color-border-strong);
+		border: 1px solid var(--color-border);
 		border-radius: var(--radius-md);
 		background: var(--color-surface-inset);
 		box-shadow: var(--shadow-sm);
 	}
+
 	.code-header {
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
 		gap: 1rem;
-		min-height: 2.75rem;
-		padding: 0.5rem 0.75rem 0.5rem 1rem;
+		min-height: 2.65rem;
+		padding: 0.45rem 0.75rem 0.45rem 1rem;
 		border-bottom: 1px solid var(--color-border);
 		background: var(--color-surface);
 	}
+
 	.code-meta {
 		display: flex;
 		align-items: center;
 		gap: 0.75rem;
 		min-width: 0;
 	}
+
 	.code-filename {
 		overflow: hidden;
-		color: var(--color-text-muted);
-		font-size: var(--text-xs);
-		font-weight: 600;
+		color: var(--color-text);
+		font-size: var(--text-sm);
+		font-weight: 500;
 		text-overflow: ellipsis;
 		white-space: nowrap;
 	}
+
 	.code-language {
-		color: var(--color-accent);
-		font: 600 var(--text-xs) var(--font-body);
-		letter-spacing: var(--tracking-label);
-		text-transform: uppercase;
+		color: var(--color-steel-bright);
+		font-size: var(--text-sm);
+		font-weight: 500;
 	}
+
 	.copy-button {
 		display: inline-flex;
 		align-items: center;
 		gap: 0.4rem;
 		flex: 0 0 auto;
-		padding: 0.35rem 0.5rem;
+		padding: 0.35rem 0.6rem;
 		border: 1px solid transparent;
 		border-radius: var(--radius-sm);
 		background: transparent;
-		color: var(--color-text-subtle);
-		font: 600 var(--text-xs) var(--font-body);
+		color: var(--color-text-muted);
+		font-size: var(--text-sm);
+		font-weight: 500;
 		cursor: pointer;
+		transition:
+			border-color var(--duration-fast) var(--ease-standard),
+			color var(--duration-fast) var(--ease-standard);
 	}
+
 	.copy-button:hover {
 		border-color: var(--color-border-strong);
 		color: var(--color-text);
 	}
+
 	.copy-button:focus-visible {
-		outline: none;
-		box-shadow: var(--focus-ring);
+		outline: 2px solid var(--color-border-focus);
+		outline-offset: 2px;
 	}
+
 	pre {
 		display: block;
 		width: 100%;
 		min-width: 0;
 		max-width: 100%;
-		max-height: 26rem;
+		max-height: 28rem;
 		margin: 0;
 		overflow-x: auto;
 		overflow-y: auto;
-		padding: 1.25rem 1rem;
+		padding: 1.15rem 1rem;
 		color: var(--color-text-muted);
-		font: var(--text-sm) / 1.7 var(--font-mono);
+		font: var(--text-sm) / 1.65 var(--font-mono);
 		tab-size: 2;
 		white-space: pre;
 	}
+
 	code {
 		display: block;
 		min-width: max-content;
 		font: inherit;
 		color: inherit;
 	}
+
 	:global(.hljs-comment),
 	:global(.hljs-quote) {
 		color: var(--color-text-subtle);
 	}
+
 	:global(.hljs-keyword),
 	:global(.hljs-selector-tag),
 	:global(.hljs-literal) {
 		color: var(--color-accent);
 	}
+
 	:global(.hljs-string),
 	:global(.hljs-title),
 	:global(.hljs-section),
 	:global(.hljs-attribute) {
 		color: var(--color-success);
 	}
+
 	:global(.hljs-number),
 	:global(.hljs-variable),
 	:global(.hljs-template-variable) {
-		color: var(--color-warning);
+		color: var(--color-accent-hover);
 	}
+
 	:global(.hljs-built_in),
 	:global(.hljs-type),
 	:global(.hljs-symbol) {
-		color: var(--color-info);
+		color: var(--color-steel-bright);
 	}
+
 	@media (max-width: 560px) {
 		pre {
 			white-space: pre-wrap;
 			overflow-wrap: anywhere;
 			word-break: break-word;
 		}
+
 		code {
 			min-width: 0;
 		}
 	}
+
 	.sr-only {
 		position: absolute;
 		width: 1px;

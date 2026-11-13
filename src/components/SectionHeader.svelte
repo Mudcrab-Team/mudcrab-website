@@ -2,7 +2,6 @@
 	import type { Snippet } from 'svelte';
 
 	let {
-		eyebrow,
 		title,
 		id,
 		description,
@@ -20,7 +19,6 @@
 
 <header class="section-header {align}">
 	<div class="section-copy">
-		{#if eyebrow}<p class="eyebrow">{eyebrow}</p>{/if}
 		<h2 {id}>{title}</h2>
 		{#if description}<p class="description">{description}</p>{/if}
 	</div>
@@ -33,36 +31,35 @@
 		align-items: end;
 		justify-content: space-between;
 		gap: 2rem;
-		margin-bottom: 2.5rem;
+		margin-bottom: 2.25rem;
 	}
+
 	.section-copy {
-		max-width: 42rem;
+		max-width: 44rem;
 	}
-	.eyebrow {
-		margin-bottom: 0.7rem;
-	}
+
 	h2 {
-		margin-bottom: 1rem;
+		margin-bottom: 0.85rem;
 	}
+
 	.description {
-		max-width: 68ch;
+		max-width: 65ch;
 	}
+
 	.section-action {
 		flex: 0 0 auto;
 	}
+
 	.section-header.center {
 		display: grid;
 		justify-items: center;
 		text-align: center;
 	}
+
 	.section-header.center .section-copy {
-		max-width: 48rem;
+		max-width: 46rem;
 	}
-	.section-header.center .eyebrow {
-		width: fit-content;
-		margin-right: auto;
-		margin-left: auto;
-	}
+
 	@media (max-width: 600px) {
 		.section-header {
 			display: grid;

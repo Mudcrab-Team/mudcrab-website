@@ -7,81 +7,67 @@
 	<div class="footer-inner">
 		<div class="footer-top">
 			<div class="footer-brand-col">
-				<BrandMark subtitle="Skyrim Bevy Engine" />
+				<BrandMark />
 				<p class="footer-mission">
-					An independent, open-source reimplementation of Skyrim Special Edition built in Rust and
-					Bevy. Rebuilt for continuous world streaming without cell load doors.
+					An independent, open-source Rust and Bevy engine for Skyrim Special Edition, rebuilt for
+					continuous streaming and Luau modding.
 				</p>
-				<div class="footer-status-pill">
-					<span class="status-dot" aria-hidden="true"></span>
-					<span class="status-text">Active Development · Rust 2024 / Bevy 0.19</span>
-				</div>
 			</div>
 
-			<div class="footer-matrix-col">
-				<h4 class="col-title">Architecture</h4>
-				<ul class="matrix-list">
+			<div class="footer-links-col">
+				<h3 class="col-title">Players</h3>
+				<ul class="links-list">
+					<li><Link href="/releases">Download and setup</Link></li>
+					<li><Link href="/roadmap">Development roadmap</Link></li>
 					<li>
-						<span class="matrix-label">Runtime</span>
-						<span class="matrix-value">Rust + Bevy ECS</span>
-					</li>
-					<li>
-						<span class="matrix-label">Scripting</span>
-						<span class="matrix-value">Luau Sandbox (mlua)</span>
-					</li>
-					<li>
-						<span class="matrix-label">Streaming</span>
-						<span class="matrix-value">Zero-Door Cell Streaming</span>
-					</li>
-					<li>
-						<span class="matrix-label">Licensing</span>
-						<span class="matrix-value">GPL-3.0-or-later</span>
+						<Link href="https://github.com/Mudcrab-Team/mudcrab/blob/main/LEGAL.md" external>
+							Legal notice
+						</Link>
 					</li>
 				</ul>
 			</div>
 
 			<div class="footer-links-col">
-				<h4 class="col-title">Resources</h4>
+				<h3 class="col-title">Modders</h3>
+				<ul class="links-list">
+					<li><Link href="/modding">Modding documentation</Link></li>
+					<li><Link href="/modding#mo2">Mod Organizer 2 guide</Link></li>
+					<li><Link href="/modding#luau">Luau scripting API</Link></li>
+					<li><Link href="/modding#ui">Flash to Bevy UI</Link></li>
+				</ul>
+			</div>
+
+			<div class="footer-links-col">
+				<h3 class="col-title">Project</h3>
 				<ul class="links-list">
 					<li>
-						<Link href="https://github.com/Mudcrab-Team/mudcrab" external>Source Code (GitHub)</Link
-						>
+						<Link href="https://github.com/Mudcrab-Team/mudcrab" external>GitHub repository</Link>
 					</li>
 					<li>
-						<Link href="https://discord.gg/29GRf8QShH" external>Community Discord</Link>
+						<Link href="https://discord.gg/29GRf8QShH" external>Discord community</Link>
 					</li>
 					<li>
-						<Link href="https://github.com/Mudcrab-Team/mudcrab/blob/main/LEGAL.md" external
-							>Legal Framework</Link
-						>
-					</li>
-					<li>
-						<Link href="/roadmap">Project Roadmap</Link>
-					</li>
-					<li>
-						<Link href="/components">Component Showcase</Link>
+						<Link href="https://github.com/Mudcrab-Team/mudcrab/blob/main/CONTRIBUTING.md" external>
+							Contributing guide
+						</Link>
 					</li>
 				</ul>
 			</div>
 		</div>
 
-		<div class="footer-divider" aria-hidden="true">
-			<span class="divider-rune">ᛟ</span>
-		</div>
-
 		<div class="footer-bottom">
 			<div class="footer-legal">
 				<p>
-					Mudcrab is an independent open-source engine recreation and is not affiliated with,
-					endorsed by, or connected to Bethesda Softworks, ZeniMax Media, or Microsoft.
+					Mudcrab is not affiliated with, endorsed by, or connected to Bethesda Softworks, ZeniMax
+					Media, or Microsoft.
 				</p>
-				<p class="legal-byo">
-					No proprietary assets, textures, meshes, or audio are included. Users provide source data
-					from their own legally acquired copy of The Elder Scrolls V: Skyrim Special Edition.
+				<p>
+					No copyrighted game assets are distributed. You supply data from your own legally owned
+					copy of The Elder Scrolls V: Skyrim Special Edition.
 				</p>
 			</div>
 			<div class="footer-meta">
-				<span>Dual licensed under MIT and Apache-2.0</span>
+				<span>Licensed under GPL-3.0-or-later</span>
 			</div>
 		</div>
 	</div>
@@ -90,126 +76,60 @@
 <style>
 	.site-footer {
 		position: relative;
+		margin-top: clamp(4rem, 8vw, 7rem);
 		border-top: 1px solid var(--color-border);
-		background: color-mix(in srgb, var(--color-background-soft) 85%, transparent);
-		margin-top: clamp(4rem, 8vw, 8rem);
+		background: var(--color-background-soft);
 	}
 
 	.footer-inner {
-		width: min(100% - 2rem, var(--content-wide));
+		width: min(100% - (var(--page-gutter) * 2), var(--content-wide));
 		margin: 0 auto;
-		padding: clamp(3rem, 6vw, 5rem) 0 3rem;
+		padding: clamp(3rem, 5vw, 4.5rem) 0 2.5rem;
 	}
 
 	.footer-top {
 		display: grid;
-		grid-template-columns: 2fr 1.25fr 1fr;
-		gap: clamp(2rem, 5vw, 4.5rem);
+		grid-template-columns: 1.75fr repeat(3, 1fr);
+		gap: clamp(2rem, 4vw, 3.5rem);
 		align-items: start;
+		padding-bottom: 2.5rem;
+		border-bottom: 1px solid var(--color-border);
 	}
 
 	.footer-brand-col {
 		display: flex;
 		flex-direction: column;
-		gap: 1.25rem;
-		max-width: 28rem;
+		gap: 1rem;
+		max-width: 24rem;
 	}
 
 	.footer-mission {
+		margin: 0;
 		color: var(--color-text-muted);
 		font-size: var(--text-sm);
-		line-height: var(--leading-normal);
-		margin: 0;
-	}
-
-	.footer-status-pill {
-		display: inline-flex;
-		align-items: center;
-		gap: 0.6rem;
-		width: fit-content;
-		padding: 0.35rem 0.75rem;
-		border: 1px solid var(--color-border);
-		border-radius: var(--radius-sm);
-		background: var(--color-surface);
-	}
-
-	.status-dot {
-		width: 0.45rem;
-		height: 0.45rem;
-		border-radius: 50%;
-		background: var(--color-success);
-		box-shadow: 0 0 8px var(--color-success);
-	}
-
-	.status-text {
-		color: var(--color-text-subtle);
-		font-family: var(--font-mono);
-		font-size: var(--text-xs);
+		line-height: 1.6;
 	}
 
 	.col-title {
-		margin: 0 0 1rem;
+		margin: 0 0 0.85rem;
 		color: var(--color-text);
-		font: 600 var(--text-sm) var(--font-display);
-		letter-spacing: 0.05em;
+		font-family: var(--font-display);
+		font-size: var(--text-body);
+		font-weight: 600;
 	}
 
-	.matrix-list,
 	.links-list {
+		display: flex;
+		flex-direction: column;
+		gap: 0.55rem;
 		margin: 0;
 		padding: 0;
 		list-style: none;
-		display: flex;
-		flex-direction: column;
-		gap: 0.65rem;
-	}
-
-	.matrix-list li {
-		display: flex;
-		justify-content: space-between;
-		align-items: baseline;
-		gap: 1rem;
-		font-size: var(--text-xs);
-		padding-bottom: 0.4rem;
-		border-bottom: 1px dashed color-mix(in srgb, var(--color-border) 60%, transparent);
-	}
-
-	.matrix-label {
-		color: var(--color-text-subtle);
-		font-family: var(--font-mono);
-	}
-
-	.matrix-value {
-		color: var(--color-text);
-		font-family: var(--font-mono);
-		font-weight: 500;
 	}
 
 	.links-list li {
+		margin: 0;
 		font-size: var(--text-sm);
-	}
-
-	.footer-divider {
-		position: relative;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		margin: clamp(2.5rem, 5vw, 3.5rem) 0 2rem;
-		height: 1px;
-		background: var(--color-border);
-	}
-
-	.divider-rune {
-		position: absolute;
-		display: grid;
-		place-items: center;
-		width: 1.75rem;
-		height: 1.75rem;
-		border: 1px solid var(--color-border-strong);
-		border-radius: 2px;
-		background: var(--color-surface-raised);
-		color: var(--color-accent);
-		font: 0.875rem var(--font-display);
 	}
 
 	.footer-bottom {
@@ -218,37 +138,44 @@
 		align-items: flex-end;
 		gap: 2rem;
 		flex-wrap: wrap;
+		padding-top: 1.75rem;
 	}
 
 	.footer-legal {
-		max-width: 48rem;
 		display: flex;
 		flex-direction: column;
-		gap: 0.5rem;
+		gap: 0.35rem;
+		max-width: 46rem;
 	}
 
 	.footer-legal p {
 		margin: 0;
 		color: var(--color-text-subtle);
-		font-size: var(--text-xs);
+		font-size: var(--text-sm);
 		line-height: 1.55;
 	}
 
-	.legal-byo {
-		color: var(--color-text-muted);
-	}
-
 	.footer-meta {
-		color: var(--color-text-disabled);
-		font-family: var(--font-mono);
-		font-size: var(--text-xs);
+		color: var(--color-text-subtle);
+		font-size: var(--text-sm);
 		white-space: nowrap;
 	}
 
 	@media (max-width: 900px) {
 		.footer-top {
+			grid-template-columns: 1fr 1fr;
+			gap: 2rem;
+		}
+
+		.footer-brand-col {
+			grid-column: 1 / -1;
+			max-width: none;
+		}
+	}
+
+	@media (max-width: 560px) {
+		.footer-top {
 			grid-template-columns: 1fr;
-			gap: 2.5rem;
 		}
 
 		.footer-bottom {
