@@ -27,301 +27,110 @@
 	} = $props();
 
 	let menuOpen = $state(false);
-	let menuClosing = $state(false);
-	let closeTimer: ReturnType<typeof setTimeout> | undefined;
-
-	function openMenu() {
-		if (closeTimer) clearTimeout(closeTimer);
-		menuClosing = false;
-		menuOpen = true;
-	}
-
-	function closeMenu() {
-		if (!menuOpen) return;
-
-		menuOpen = false;
-		menuClosing = true;
-		closeTimer = setTimeout(() => {
-			menuClosing = false;
-		}, 250);
-	}
-
-	function handleKeydown(event: KeyboardEvent) {
-		if (event.key === 'Escape') closeMenu();
-	}
-
 	let scrolled = $state(false);
 
 	function updateScrollState() {
-		scrolled = overlay && window.scrollY > 24;
+		scrolled = window.scrollY > 24;
+	}
+
+	function handleKeydown(event: KeyboardEvent) {
+		if (event.key === 'Escape') menuOpen = false;
 	}
 
 	$effect(() => {
-		overlay;
 		updateScrollState();
 	});
 </script>
 
 <svelte:window onkeydown={handleKeydown} onscroll={updateScrollState} />
 
-<header class="site-header" class:sticky class:overlay class:scrolled>
-	<div class="header-inner">
-		{@render brand()}
-		<button
-			class="menu-toggle"
-			type="button"
-			aria-label={menuOpen ? 'Close menu' : mobileLabel}
-			aria-expanded={menuOpen}
-			aria-controls="site-navigation"
-			onclick={() => (menuOpen ? closeMenu() : openMenu())}
-		>
-			{#if menuOpen}
-				<X size={20} strokeWidth={1.75} aria-hidden="true" />
-			{:else}
-				<Menu size={20} strokeWidth={1.75} aria-hidden="true" />
-			{/if}
-		</button>
+<header
+	class="z-40 w-full transition-[background-color,border-color,backdrop-filter] duration-200 ease-out {sticky
+		? 'sticky top-0'
+		: ''} {overlay && !sticky ? 'fixed top-0 right-0 left-0' : ''} {overlay && !scrolled
+		? 'border-b border-transparent bg-base-100/20 backdrop-blur-xs'
+		: 'border-b border-base-300 bg-base-100/90 backdrop-blur-md'}"
+>
+	<div class="navbar mx-auto min-h-[4.25rem] max-w-[var(--content-wide)] px-4 sm:px-6 lg:px-8">
+		<div class="navbar-start gap-3">
+			{@render brand()}
+		</div>
 
-		{#if menuOpen}
-			<button class="menu-backdrop" type="button" aria-label="Close menu" onclick={closeMenu}
-			></button>
-		{/if}
+		<nav class="navbar-center hidden md:flex" aria-label="Main navigation">
+			<ul class="flex items-center gap-1">
+				{#each items as item (item.href)}
+					<li>
+						<a
+							href={item.href}
+							aria-current={item.active ? 'page' : undefined}
+							target={item.external ? '_blank' : undefined}
+							rel={item.external ? 'noreferrer' : undefined}
+							class="relative inline-flex items-center rounded-md px-3.5 py-2 text-sm font-medium no-underline transition-colors duration-150 ease-out {item.active
+								? 'text-base-content after:absolute after:right-3 after:bottom-0.5 after:left-3 after:h-0.5 after:rounded-full after:bg-accent'
+								: 'text-base-content/75 hover:bg-base-200/70 hover:text-base-content'}"
+						>
+							{item.label}
+						</a>
+					</li>
+				{/each}
+			</ul>
+		</nav>
 
-		<div class="header-content-root" class:closing={menuClosing}>
-			<div class="header-content" class:open={menuOpen}>
-				<nav id="site-navigation" aria-label="Main navigation">
-					<ul>
-						{#each items as item}
-							<li>
-								<a
-									class:active={item.active}
-									href={item.href}
-									aria-current={item.active ? 'page' : undefined}
-									target={item.external ? '_blank' : undefined}
-									rel={item.external ? 'noreferrer' : undefined}
-									onclick={closeMenu}>{item.label}</a
-								>
-							</li>
-						{/each}
-					</ul>
-				</nav>
-				{#if actions}<div class="header-actions">{@render actions()}</div>{/if}
+		<div class="navbar-end gap-2">
+			<div class="hidden items-center gap-2 md:flex">
+				{#if actions}
+					{@render actions()}
+				{/if}
 			</div>
+
+			<button
+				type="button"
+				class="btn btn-square border border-base-300/80 bg-base-200/70 btn-ghost md:hidden"
+				aria-label={menuOpen ? 'Close menu' : mobileLabel}
+				aria-expanded={menuOpen}
+				aria-controls="mobile-site-menu"
+				onclick={() => (menuOpen = !menuOpen)}
+			>
+				{#if menuOpen}
+					<X size={20} aria-hidden="true" />
+				{:else}
+					<Menu size={20} aria-hidden="true" />
+				{/if}
+			</button>
 		</div>
 	</div>
+
+	{#if menuOpen}
+		<div
+			id="mobile-site-menu"
+			class="border-t border-base-300 bg-base-100/98 px-4 py-4 backdrop-blur-md md:hidden"
+		>
+			<nav aria-label="Mobile navigation">
+				<ul class="menu w-full gap-1 p-0">
+					{#each items as item (item.href)}
+						<li>
+							<a
+								href={item.href}
+								aria-current={item.active ? 'page' : undefined}
+								target={item.external ? '_blank' : undefined}
+								rel={item.external ? 'noreferrer' : undefined}
+								class="text-base font-medium {item.active
+									? 'bg-primary text-primary-content'
+									: 'text-base-content/85'}"
+								onclick={() => (menuOpen = false)}
+							>
+								{item.label}
+							</a>
+						</li>
+					{/each}
+				</ul>
+			</nav>
+			{#if actions}
+				<div class="mt-4 flex items-center justify-between border-t border-base-300 pt-4">
+					<span class="text-sm text-base-content/75">Appearance</span>
+					{@render actions()}
+				</div>
+			{/if}
+		</div>
+	{/if}
 </header>
-
-<style>
-	:global(body) {
-		&:has(.header-content-root .header-content.open) {
-			overflow: hidden;
-		}
-	}
-
-	.site-header {
-		position: relative;
-		z-index: var(--z-sticky);
-		border-bottom: 1px solid var(--color-border);
-		background: color-mix(in srgb, var(--color-background) 92%, transparent);
-		backdrop-filter: blur(12px);
-	}
-	.site-header.sticky {
-		position: sticky;
-		top: 0;
-		left: 0;
-	}
-	.site-header.overlay:not(.sticky) {
-		position: absolute;
-		top: 0;
-		right: 0;
-		left: 0;
-		border-bottom-color: transparent;
-		background: color-mix(in srgb, var(--color-background) 12%, transparent);
-		backdrop-filter: blur(3px);
-		transition:
-			background var(--duration-normal) var(--ease-standard),
-			backdrop-filter var(--duration-normal) var(--ease-standard);
-	}
-	.site-header.overlay.scrolled {
-		background: color-mix(in srgb, var(--color-background) 78%, transparent);
-		backdrop-filter: blur(14px);
-	}
-	.header-inner {
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		gap: 2rem;
-		width: min(100% - 2rem, var(--content-wide));
-		min-height: 4.5rem;
-		margin: 0 auto;
-	}
-	.header-content {
-		display: flex;
-		align-items: center;
-		gap: 2rem;
-
-		#site-navigation {
-			overflow-y: scroll;
-			max-height: 90svh;
-		}
-	}
-	nav ul {
-		display: flex;
-		align-items: center;
-		gap: 1.5rem;
-		margin: 0;
-		padding: 0;
-		list-style: none;
-	}
-	nav li + li {
-		margin-top: 0;
-	}
-	nav a {
-		position: relative;
-		display: inline-flex;
-		padding: 0.5rem 0.25rem;
-		color: var(--color-text-muted);
-		font-size: var(--text-sm);
-		font-weight: 500;
-		text-decoration: none;
-		transition: color var(--duration-fast) var(--ease-standard);
-	}
-	nav a::after {
-		position: absolute;
-		right: 0.25rem;
-		bottom: 0;
-		left: 0.25rem;
-		height: 2px;
-		background: var(--color-accent);
-		content: '';
-		transform: scaleX(0);
-		transform-origin: right;
-		transition: transform var(--duration-normal) var(--ease-standard);
-	}
-	nav a:hover,
-	nav a.active {
-		color: var(--color-text);
-	}
-	nav a:hover::after,
-	nav a.active::after {
-		transform: scaleX(1);
-		transform-origin: left;
-	}
-	nav a:focus-visible,
-	.menu-toggle:focus-visible {
-		outline: none;
-		box-shadow: var(--focus-ring);
-	}
-	.header-actions {
-		display: flex;
-		align-items: center;
-		gap: 0.6rem;
-	}
-	.menu-toggle {
-		display: none;
-		place-items: center;
-		width: 2.5rem;
-		height: 2.5rem;
-		padding: 0;
-		border: 1px solid var(--color-border-strong);
-		border-radius: var(--radius-sm);
-		background: transparent;
-		color: var(--color-text-muted);
-		cursor: pointer;
-	}
-	@media (max-width: 700px) {
-		.site-header {
-			&:has(.header-content-root .header-content.open) {
-				backdrop-filter: none;
-			}
-		}
-		.header-inner {
-			position: relative;
-			min-height: 4rem;
-		}
-		.menu-toggle {
-			position: relative;
-			z-index: 3;
-			display: grid;
-		}
-		.menu-backdrop {
-			position: fixed;
-			inset: 0;
-			z-index: 1;
-			padding: 0;
-			border: 0;
-			cursor: default;
-		}
-
-		.header-content-root:not(:has(.header-content.open)):not(.closing) {
-			display: none;
-		}
-		.header-content-root {
-			position: fixed;
-			top: 0;
-			left: 0;
-			z-index: 2;
-			width: 100svw;
-			height: 100svh;
-			pointer-events: none;
-			transition: 0.12s;
-
-			&:has(.header-content.open) {
-				background: color-mix(in srgb, var(--color-background) 64%, transparent);
-				backdrop-filter: blur(3px);
-			}
-		}
-
-		.header-content {
-			position: fixed;
-			top: 0;
-			right: 0;
-			bottom: 0;
-			display: grid;
-			width: min(85vw, 28rem);
-			height: 100svh;
-			align-content: start;
-			gap: 1.25rem;
-			padding: 5.5rem 1.5rem 1.5rem;
-			border-left: 1px solid var(--color-border-strong);
-			background: var(--color-surface-raised);
-			box-shadow: var(--shadow-lg);
-			visibility: hidden;
-			pointer-events: none;
-			transform: translateX(100%);
-			transition:
-				transform var(--duration-normal) var(--ease-standard),
-				visibility 0s linear var(--duration-normal);
-
-			&.open {
-				visibility: visible;
-				pointer-events: auto;
-				transform: translateX(0);
-				transition-delay: 0s;
-				pointer-events: all;
-
-				@starting-style {
-					transform: translateX(100%);
-				}
-			}
-		}
-		nav ul {
-			display: grid;
-			gap: 0.25rem;
-		}
-		nav a {
-			width: 100%;
-			padding: 0.7rem 0.5rem;
-		}
-		.header-actions {
-			padding-top: 1rem;
-			border-top: 1px solid var(--color-border);
-		}
-	}
-	@media (prefers-reduced-motion: reduce) {
-		nav a::after,
-		.header-content {
-			transition: none;
-		}
-	}
-</style>

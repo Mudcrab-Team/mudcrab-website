@@ -1,10 +1,7 @@
 <script lang="ts">
-	import Badge from '../../components/Badge.svelte';
-	import Button from '../../components/Button.svelte';
-	import SectionHeader from '../../components/SectionHeader.svelte';
+	import CircleDot from '@lucide/svelte/icons/circle-dot';
 	import ExternalLink from '@lucide/svelte/icons/external-link';
 	import GitPullRequest from '@lucide/svelte/icons/git-pull-request';
-	import CircleDot from '@lucide/svelte/icons/circle-dot';
 	import Search from '@lucide/svelte/icons/search';
 	import type { PageData } from './$types';
 
@@ -13,7 +10,14 @@
 	let searchQuery = $state('');
 	let selectedType = $state<'all' | 'Issue' | 'PullRequest'>('all');
 
-	// Filter columns and cards dynamically
+	const columnAccents: Record<string, string> = {
+		todo: '#68a7cc',
+		'in-progress': '#d38c26',
+		'in-review': '#4a7d9c',
+		'merge-ready': '#52a87d',
+		done: '#34557a'
+	};
+
 	const filteredColumns = $derived(
 		data.columns.map((col) => {
 			const filteredCards = col.cards.filter((card) => {
@@ -23,7 +27,6 @@
 					card.number.toString().includes(searchQuery.trim());
 
 				const matchesType = selectedType === 'all' || card.type === selectedType;
-
 				return matchesSearch && matchesType;
 			});
 
@@ -55,153 +58,180 @@
 </script>
 
 <svelte:head>
-	<title>Roadmap & Project Board · Mudcrab Engine</title>
+	<title>Development Roadmap · Mudcrab Engine</title>
 	<meta
 		name="description"
-		content="Live development roadmap and task board synchronized directly from the Mudcrab GitHub Project."
+		content="Live development roadmap and task board synchronized from the Mudcrab GitHub Project."
 	/>
 </svelte:head>
 
-{#snippet externalLinkIcon()}
-	<ExternalLink size={15} aria-hidden="true" />
-{/snippet}
-
-<div class="roadmap-page">
-	<header class="roadmap-header">
-		<div class="header-content">
-			<SectionHeader
-				eyebrow="Live Project Board"
-				title="Development Roadmap"
-				description="Track ongoing engine systems, asset converters, and pull requests in real time. Synchronized with the official GitHub Project."
-			/>
-			<div class="header-actions">
-				<Button
-					variant="primary"
-					href={data.projectUrl}
-					target="_blank"
-					trailing={externalLinkIcon}
-				>
-					View on GitHub
-				</Button>
+<main class="space-y-8 py-12 sm:py-16">
+	<header class="space-y-6">
+		<div class="flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
+			<div class="max-w-2xl space-y-3">
+				<h1 class="font-display text-[clamp(2.25rem,4.5vw,3.5rem)] font-bold text-base-content">
+					Development roadmap
+				</h1>
+				<p class="prose-measure text-base-content/80">
+					Track ongoing engine subsystems, asset converters, and pull requests synchronized with the
+					GitHub Project board.
+				</p>
 			</div>
+
+			<a
+				href={data.projectUrl}
+				target="_blank"
+				rel="noreferrer"
+				class="btn w-fit gap-2 text-sm font-semibold btn-primary"
+			>
+				<span>Open GitHub board</span>
+				<ExternalLink size={15} aria-hidden="true" />
+			</a>
 		</div>
 
-		<!-- Progress and Stats Summary -->
-		<div class="stats-card">
-			<div class="stats-grid">
-				<div class="stat-item">
-					<span class="stat-label">Total Tracked</span>
-					<span class="stat-value">{data.stats.total}</span>
+		<div class="rounded-box border border-base-300 bg-base-200/60 p-5 sm:p-6">
+			<div class="stats w-full stats-vertical bg-transparent sm:stats-horizontal">
+				<div class="stat px-2 py-2 sm:px-4">
+					<div class="stat-title text-sm text-base-content/70">Total tracked</div>
+					<div class="stat-value font-bold text-[var(--text-section)] text-base-content">
+						{data.stats.total}
+					</div>
 				</div>
-				<div class="stat-item">
-					<span class="stat-label">In Progress</span>
-					<span class="stat-value stat-progress">{data.stats.inProgress}</span>
+				<div class="stat px-2 py-2 sm:px-4">
+					<div class="stat-title text-sm text-base-content/70">In progress</div>
+					<div class="stat-value font-bold text-[var(--text-section)] text-accent">
+						{data.stats.inProgress}
+					</div>
 				</div>
-				<div class="stat-item">
-					<span class="stat-label">Completed</span>
-					<span class="stat-value stat-done">{data.stats.done}</span>
+				<div class="stat px-2 py-2 sm:px-4">
+					<div class="stat-title text-sm text-base-content/70">Completed</div>
+					<div class="stat-value font-bold text-[var(--text-section)] text-success">
+						{data.stats.done}
+					</div>
 				</div>
-				<div class="stat-item">
-					<span class="stat-label">Progress</span>
-					<span class="stat-value">{data.stats.completionRate}%</span>
+				<div class="stat px-2 py-2 sm:px-4">
+					<div class="stat-title text-sm text-base-content/70">Completion</div>
+					<div class="stat-value font-bold text-[var(--text-section)] text-info">
+						{data.stats.completionRate}%
+					</div>
 				</div>
 			</div>
-
-			<div class="progress-bar-container" aria-label="Project completion progress">
-				<div class="progress-bar-fill" style="width: {data.stats.completionRate}%"></div>
-			</div>
+			<progress
+				class="progress mt-4 h-2 w-full bg-base-300 progress-accent"
+				value={data.stats.completionRate}
+				max="100"
+				aria-label="Project completion percentage"
+			></progress>
 		</div>
 
-		<!-- Controls & Search Toolbar -->
-		<div class="toolbar">
-			<div class="search-box">
-				<Search class="search-icon" size={16} aria-hidden="true" />
+		<div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+			<label class="input-bordered input flex w-full max-w-md items-center gap-2 bg-base-200">
+				<Search size={16} class="text-base-content/60" aria-hidden="true" />
 				<input
 					type="search"
-					placeholder="Search tasks, issues or PR #..."
+					placeholder="Search tasks, issues, or PR number..."
 					bind:value={searchQuery}
-					class="search-input"
-					aria-label="Filter tasks"
+					class="grow text-sm"
+					aria-label="Filter roadmap tasks"
 				/>
-			</div>
+			</label>
 
-			<div class="filter-pills" role="radiogroup" aria-label="Filter by type">
+			<div role="tablist" aria-label="Filter by item type" class="tabs-box tabs bg-base-200 p-1">
 				<button
 					type="button"
-					class="filter-pill"
-					class:active={selectedType === 'all'}
+					role="tab"
+					aria-selected={selectedType === 'all'}
+					class="tab text-sm font-medium {selectedType === 'all'
+						? 'tab-active bg-primary text-primary-content'
+						: ''}"
 					onclick={() => (selectedType = 'all')}
-					aria-checked={selectedType === 'all'}
-					role="radio"
 				>
-					All Tasks
+					All tasks
 				</button>
 				<button
 					type="button"
-					class="filter-pill"
-					class:active={selectedType === 'Issue'}
+					role="tab"
+					aria-selected={selectedType === 'Issue'}
+					class="tab gap-1.5 text-sm font-medium {selectedType === 'Issue'
+						? 'tab-active bg-primary text-primary-content'
+						: ''}"
 					onclick={() => (selectedType = 'Issue')}
-					aria-checked={selectedType === 'Issue'}
-					role="radio"
 				>
-					<CircleDot size={13} aria-hidden="true" />
-					Issues
+					<CircleDot size={14} aria-hidden="true" />
+					<span>Issues</span>
 				</button>
 				<button
 					type="button"
-					class="filter-pill"
-					class:active={selectedType === 'PullRequest'}
+					role="tab"
+					aria-selected={selectedType === 'PullRequest'}
+					class="tab gap-1.5 text-sm font-medium {selectedType === 'PullRequest'
+						? 'tab-active bg-primary text-primary-content'
+						: ''}"
 					onclick={() => (selectedType = 'PullRequest')}
-					aria-checked={selectedType === 'PullRequest'}
-					role="radio"
 				>
-					<GitPullRequest size={13} aria-hidden="true" />
-					Pull Requests
+					<GitPullRequest size={14} aria-hidden="true" />
+					<span>Pull requests</span>
 				</button>
 			</div>
 		</div>
 	</header>
 
-	<!-- Interactive Kanban Board -->
-	<section class="kanban-container" aria-label="Roadmap Kanban Board">
-		<div class="kanban-track">
+	<section class="w-full overflow-x-auto pb-4" aria-label="Roadmap Kanban Board">
+		<div class="grid min-w-[1260px] grid-cols-5 gap-4">
 			{#each filteredColumns as column (column.id)}
-				<div class="kanban-column" data-status={column.id}>
-					<div class="column-header">
-						<div class="column-title-group">
-							<span class="column-dot" style="background-color: {column.color};" aria-hidden="true"
+				{@const accent = columnAccents[column.id] ?? column.color}
+				<div
+					class="flex min-h-[500px] flex-col gap-3 rounded-box border border-base-300 bg-base-200/50 p-4"
+				>
+					<div class="flex items-center justify-between border-b border-base-300 pb-3">
+						<div class="flex items-center gap-2.5">
+							<span
+								class="h-2.5 w-2.5 rounded-full"
+								style="background-color: {accent};"
+								aria-hidden="true"
 							></span>
-							<h3>{column.name}</h3>
+							<h2 class="font-sans text-sm font-semibold text-base-content">{column.name}</h2>
 						</div>
-						<Badge tone="neutral" size="sm">{column.cards.length}</Badge>
+						<span class="text-sm font-semibold text-base-content/70">{column.cards.length}</span>
 					</div>
 
-					<div class="column-cards">
+					<div class="flex max-h-[680px] flex-col gap-2.5 overflow-y-auto pr-1">
 						{#if column.cards.length === 0}
-							<div class="column-empty">
-								<p>No items in this stage</p>
-							</div>
+							<p class="py-10 text-center text-sm text-base-content/60">No items in this stage</p>
 						{:else}
 							{#each column.cards as card (card.id)}
-								<a href={card.url} target="_blank" rel="noopener noreferrer" class="kanban-card">
-									<div class="card-top">
-										<span class="card-meta">
+								<a
+									href={card.url}
+									target="_blank"
+									rel="noopener noreferrer"
+									class="group flex flex-col gap-2.5 rounded-box border border-base-300 bg-base-100/90 p-3.5 no-underline transition-[transform,border-color] duration-150 ease-out hover:-translate-y-0.5 hover:border-primary"
+								>
+									<div class="flex items-center justify-between text-sm text-base-content/70">
+										<span class="inline-flex items-center gap-1.5 font-medium">
 											{#if card.type === 'PullRequest'}
-												<GitPullRequest size={13} class="icon-pr" aria-label="Pull Request" />
+												<GitPullRequest size={14} class="text-info" aria-label="Pull Request" />
 												<span>PR #{card.number}</span>
 											{:else}
-												<CircleDot size={13} class="icon-issue" aria-label="Issue" />
+												<CircleDot size={14} class="text-success" aria-label="Issue" />
 												<span>#{card.number}</span>
 											{/if}
 										</span>
-										<ExternalLink size={12} class="card-link-icon" aria-hidden="true" />
+										<ExternalLink
+											size={13}
+											class="opacity-0 transition-opacity duration-150 group-hover:opacity-80"
+											aria-hidden="true"
+										/>
 									</div>
 
-									<p class="card-title">{card.title}</p>
+									<p class="line-clamp-3 text-sm leading-snug font-medium text-base-content">
+										{card.title}
+									</p>
 
-									<div class="card-footer">
-										<span class="card-repo">{card.repository.split('/')[1] || 'mudcrab'}</span>
-										<span class="card-time">{formatRelativeTime(card.updatedAt)}</span>
+									<div
+										class="flex items-center justify-between border-t border-base-300/70 pt-2 text-sm text-base-content/65"
+									>
+										<span class="font-mono">{card.repository.split('/')[1] || 'mudcrab'}</span>
+										<span>{formatRelativeTime(card.updatedAt)}</span>
 									</div>
 								</a>
 							{/each}
@@ -211,332 +241,4 @@
 			{/each}
 		</div>
 	</section>
-</div>
-
-<style>
-	.roadmap-page {
-		display: flex;
-		flex-direction: column;
-		gap: 2.5rem;
-		padding: 2.5rem 0 5rem;
-	}
-
-	.roadmap-header {
-		display: flex;
-		flex-direction: column;
-		gap: 2rem;
-	}
-
-	.header-content {
-		display: flex;
-		align-items: flex-start;
-		justify-content: space-between;
-		gap: 2rem;
-		flex-wrap: wrap;
-	}
-
-	.header-actions {
-		display: flex;
-		align-items: center;
-		margin-top: 1rem;
-	}
-
-	/* Stats Card */
-	.stats-card {
-		display: flex;
-		flex-direction: column;
-		gap: 1.25rem;
-		padding: 1.5rem 1.75rem;
-		background-color: var(--surface-1);
-		border: 1px solid var(--border-subtle);
-		border-radius: 8px;
-		box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
-	}
-
-	.stats-grid {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-		gap: 1.5rem;
-	}
-
-	.stat-item {
-		display: flex;
-		flex-direction: column;
-		gap: 0.25rem;
-	}
-
-	.stat-label {
-		font-size: 0.75rem;
-		text-transform: uppercase;
-		letter-spacing: 0.08em;
-		color: var(--text-muted);
-		font-weight: 500;
-	}
-
-	.stat-value {
-		font-family: var(--font-display);
-		font-size: 1.75rem;
-		font-weight: 600;
-		color: var(--text-base);
-	}
-
-	.stat-progress {
-		color: #f87171;
-	}
-
-	.stat-done {
-		color: #a78bfa;
-	}
-
-	.progress-bar-container {
-		height: 6px;
-		width: 100%;
-		background-color: var(--surface-2);
-		border-radius: 9999px;
-		overflow: hidden;
-	}
-
-	.progress-bar-fill {
-		height: 100%;
-		background: linear-gradient(90deg, #38bdf8 0%, #a78bfa 100%);
-		border-radius: 9999px;
-		transition: width 0.4s ease-out;
-	}
-
-	/* Toolbar & Search */
-	.toolbar {
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		gap: 1rem;
-		flex-wrap: wrap;
-	}
-
-	.search-box {
-		position: relative;
-		flex: 1;
-		min-width: 260px;
-		max-width: 450px;
-	}
-
-	:global(.search-icon) {
-		position: absolute;
-		left: 0.875rem;
-		top: 50%;
-		transform: translateY(-50%);
-		color: var(--text-muted);
-		pointer-events: none;
-	}
-
-	.search-input {
-		width: 100%;
-		padding: 0.625rem 0.875rem 0.625rem 2.5rem;
-		font-size: 0.875rem;
-		background-color: var(--surface-1);
-		border: 1px solid var(--border-subtle);
-		border-radius: 6px;
-		color: var(--text-base);
-		outline: none;
-		transition: border-color 0.15s ease;
-	}
-
-	.search-input:focus {
-		border-color: var(--accent);
-		box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.15);
-	}
-
-	.filter-pills {
-		display: flex;
-		gap: 0.5rem;
-		background-color: var(--surface-1);
-		padding: 0.25rem;
-		border: 1px solid var(--border-subtle);
-		border-radius: 6px;
-	}
-
-	.filter-pill {
-		display: inline-flex;
-		align-items: center;
-		gap: 0.375rem;
-		padding: 0.375rem 0.75rem;
-		font-size: 0.8125rem;
-		color: var(--text-muted);
-		background: transparent;
-		border: none;
-		border-radius: 4px;
-		cursor: pointer;
-		font-weight: 500;
-		transition: all 0.15s ease;
-	}
-
-	.filter-pill:hover {
-		color: var(--text-base);
-	}
-
-	.filter-pill.active {
-		background-color: var(--surface-2);
-		color: var(--text-base);
-	}
-
-	/* Kanban Board Layout */
-	.kanban-container {
-		width: 100%;
-		overflow-x: auto;
-		padding-bottom: 1.5rem;
-		-webkit-overflow-scrolling: touch;
-	}
-
-	.kanban-track {
-		display: grid;
-		grid-template-columns: repeat(5, minmax(280px, 1fr));
-		gap: 1.25rem;
-		min-width: 1300px;
-	}
-
-	.kanban-column {
-		display: flex;
-		flex-direction: column;
-		gap: 1rem;
-		background-color: rgba(18, 22, 28, 0.6);
-		border: 1px solid var(--border-subtle);
-		border-radius: 8px;
-		padding: 1.125rem 1rem;
-		min-height: 520px;
-	}
-
-	.column-header {
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		padding-bottom: 0.75rem;
-		border-bottom: 1px solid var(--border-subtle);
-	}
-
-	.column-title-group {
-		display: flex;
-		align-items: center;
-		gap: 0.625rem;
-	}
-
-	.column-dot {
-		width: 8px;
-		height: 8px;
-		border-radius: 50%;
-	}
-
-	.column-header h3 {
-		font-size: 0.875rem;
-		font-weight: 600;
-		text-transform: uppercase;
-		letter-spacing: 0.05em;
-		color: var(--text-base);
-	}
-
-	.column-cards {
-		display: flex;
-		flex-direction: column;
-		gap: 0.75rem;
-		overflow-y: auto;
-		max-height: 720px;
-		padding-right: 0.25rem;
-	}
-
-	.column-empty {
-		padding: 2.5rem 1rem;
-		text-align: center;
-		color: var(--text-muted);
-		font-size: 0.8125rem;
-		font-style: italic;
-	}
-
-	/* Kanban Card */
-	.kanban-card {
-		display: flex;
-		flex-direction: column;
-		gap: 0.625rem;
-		padding: 0.875rem 1rem;
-		background-color: var(--surface-1);
-		border: 1px solid var(--border-subtle);
-		border-radius: 6px;
-		text-decoration: none;
-		color: inherit;
-		transition:
-			transform 0.15s ease,
-			border-color 0.15s ease,
-			box-shadow 0.15s ease;
-	}
-
-	.kanban-card:hover {
-		transform: translateY(-2px);
-		border-color: var(--accent);
-		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-	}
-
-	.card-top {
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		font-size: 0.75rem;
-		color: var(--text-muted);
-	}
-
-	.card-meta {
-		display: inline-flex;
-		align-items: center;
-		gap: 0.375rem;
-		font-weight: 500;
-	}
-
-	:global(.icon-pr) {
-		color: #38bdf8;
-	}
-
-	:global(.icon-issue) {
-		color: #4ade80;
-	}
-
-	:global(.card-link-icon) {
-		opacity: 0;
-		transition: opacity 0.15s ease;
-	}
-
-	.kanban-card:hover :global(.card-link-icon) {
-		opacity: 0.8;
-	}
-
-	.card-title {
-		font-size: 0.875rem;
-		line-height: 1.45;
-		color: var(--text-base);
-		font-weight: 500;
-		display: -webkit-box;
-		-webkit-line-clamp: 3;
-		line-clamp: 3;
-		-webkit-box-orient: vertical;
-		overflow: hidden;
-	}
-
-	.card-footer {
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		margin-top: 0.25rem;
-		padding-top: 0.5rem;
-		border-top: 1px solid rgba(255, 255, 255, 0.05);
-		font-size: 0.6875rem;
-		color: var(--text-muted);
-	}
-
-	.card-repo {
-		background-color: var(--surface-2);
-		padding: 0.125rem 0.375rem;
-		border-radius: 4px;
-		font-family: monospace;
-	}
-
-	@media (max-width: 900px) {
-		.kanban-track {
-			grid-template-columns: repeat(5, 260px);
-		}
-	}
-</style>
+</main>

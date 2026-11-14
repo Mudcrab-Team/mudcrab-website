@@ -6,12 +6,23 @@
 	import css from 'highlight.js/lib/languages/css';
 	import javascript from 'highlight.js/lib/languages/javascript';
 	import json from 'highlight.js/lib/languages/json';
+	import lua from 'highlight.js/lib/languages/lua';
+	import powershell from 'highlight.js/lib/languages/powershell';
+	import rust from 'highlight.js/lib/languages/rust';
+	import sql from 'highlight.js/lib/languages/sql';
 	import typescript from 'highlight.js/lib/languages/typescript';
+
 	hljs.registerLanguage('bash', bash);
+	hljs.registerLanguage('sh', bash);
 	hljs.registerLanguage('css', css);
 	hljs.registerLanguage('javascript', javascript);
 	hljs.registerLanguage('js', javascript);
 	hljs.registerLanguage('json', json);
+	hljs.registerLanguage('lua', lua);
+	hljs.registerLanguage('luau', lua);
+	hljs.registerLanguage('powershell', powershell);
+	hljs.registerLanguage('rust', rust);
+	hljs.registerLanguage('sql', sql);
 	hljs.registerLanguage('typescript', typescript);
 	hljs.registerLanguage('ts', typescript);
 
@@ -29,6 +40,7 @@
 
 	let copied = $state(false);
 	let copyTimer: ReturnType<typeof setTimeout> | undefined;
+
 	let highlightedCode = $derived.by(() => {
 		try {
 			return hljs.highlight(code, { language }).value;
@@ -51,159 +63,63 @@
 	}
 </script>
 
-<div class="code-block">
-	<div class="code-header">
-		<div class="code-meta">
-			{#if filename}<span class="code-filename">{filename}</span>{/if}
-			<span class="code-language">{language}</span>
+<div class="w-full overflow-hidden rounded-box border border-base-300 bg-[#080d13] text-[#edf3f7]">
+	<div
+		class="flex min-h-10 items-center justify-between gap-3 border-b border-base-300/70 bg-[#101924] px-4 py-2"
+	>
+		<div class="flex min-w-0 items-center gap-3 text-sm">
+			{#if filename}
+				<span class="truncate font-medium text-[#edf3f7]">{filename}</span>
+			{/if}
+			<span class="text-sm font-medium text-[#76b0d1]">{language}</span>
 		</div>
 		{#if copyable}
 			<button
-				class="copy-button"
 				type="button"
 				onclick={copyCode}
 				aria-label={copied ? 'Code copied' : 'Copy code'}
+				class="btn gap-1.5 btn-ghost text-sm font-medium text-[#b4c5d2] btn-xs hover:bg-[#1a2838] hover:text-[#edf3f7]"
 			>
 				{#if copied}
-					<Check size={15} strokeWidth={1.75} aria-hidden="true" />
+					<Check size={14} aria-hidden="true" class="text-[#52a87d]" />
 					<span>Copied</span>
 				{:else}
-					<Clipboard size={15} strokeWidth={1.75} aria-hidden="true" />
+					<Clipboard size={14} aria-hidden="true" />
 					<span>Copy</span>
 				{/if}
 			</button>
 		{/if}
 	</div>
-	<pre><code>{@html highlightedCode}</code></pre>
+	<pre class="m-0 max-h-[26rem] overflow-x-auto p-4 font-mono text-sm leading-relaxed"><code
+			>{@html highlightedCode}</code
+		></pre>
 	{#if copied}<span class="sr-only" role="status">Code copied to clipboard.</span>{/if}
 </div>
 
 <style>
-	.code-block {
-		width: 100%;
-		min-width: 0;
-		max-width: 100%;
-		overflow: hidden;
-		border: 1px solid var(--color-border-strong);
-		border-radius: var(--radius-md);
-		background: var(--color-surface-inset);
-		box-shadow: var(--shadow-sm);
-	}
-	.code-header {
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		gap: 1rem;
-		min-height: 2.75rem;
-		padding: 0.5rem 0.75rem 0.5rem 1rem;
-		border-bottom: 1px solid var(--color-border);
-		background: var(--color-surface);
-	}
-	.code-meta {
-		display: flex;
-		align-items: center;
-		gap: 0.75rem;
-		min-width: 0;
-	}
-	.code-filename {
-		overflow: hidden;
-		color: var(--color-text-muted);
-		font-size: var(--text-xs);
-		font-weight: 600;
-		text-overflow: ellipsis;
-		white-space: nowrap;
-	}
-	.code-language {
-		color: var(--color-accent);
-		font: 600 var(--text-xs) var(--font-body);
-		letter-spacing: var(--tracking-label);
-		text-transform: uppercase;
-	}
-	.copy-button {
-		display: inline-flex;
-		align-items: center;
-		gap: 0.4rem;
-		flex: 0 0 auto;
-		padding: 0.35rem 0.5rem;
-		border: 1px solid transparent;
-		border-radius: var(--radius-sm);
-		background: transparent;
-		color: var(--color-text-subtle);
-		font: 600 var(--text-xs) var(--font-body);
-		cursor: pointer;
-	}
-	.copy-button:hover {
-		border-color: var(--color-border-strong);
-		color: var(--color-text);
-	}
-	.copy-button:focus-visible {
-		outline: none;
-		box-shadow: var(--focus-ring);
-	}
-	pre {
-		display: block;
-		width: 100%;
-		min-width: 0;
-		max-width: 100%;
-		max-height: 26rem;
-		margin: 0;
-		overflow-x: auto;
-		overflow-y: auto;
-		padding: 1.25rem 1rem;
-		color: var(--color-text-muted);
-		font: var(--text-sm) / 1.7 var(--font-mono);
-		tab-size: 2;
-		white-space: pre;
-	}
-	code {
-		display: block;
-		min-width: max-content;
-		font: inherit;
-		color: inherit;
-	}
 	:global(.hljs-comment),
 	:global(.hljs-quote) {
-		color: var(--color-text-subtle);
+		color: #7d93a5;
 	}
 	:global(.hljs-keyword),
 	:global(.hljs-selector-tag),
 	:global(.hljs-literal) {
-		color: var(--color-accent);
+		color: #76b0d1;
 	}
 	:global(.hljs-string),
 	:global(.hljs-title),
 	:global(.hljs-section),
 	:global(.hljs-attribute) {
-		color: var(--color-success);
+		color: #7fc8a2;
 	}
 	:global(.hljs-number),
 	:global(.hljs-variable),
 	:global(.hljs-template-variable) {
-		color: var(--color-warning);
+		color: #e5a645;
 	}
 	:global(.hljs-built_in),
 	:global(.hljs-type),
 	:global(.hljs-symbol) {
-		color: var(--color-info);
-	}
-	@media (max-width: 560px) {
-		pre {
-			white-space: pre-wrap;
-			overflow-wrap: anywhere;
-			word-break: break-word;
-		}
-		code {
-			min-width: 0;
-		}
-	}
-	.sr-only {
-		position: absolute;
-		width: 1px;
-		height: 1px;
-		padding: 0;
-		overflow: hidden;
-		clip: rect(0, 0, 0, 0);
-		white-space: nowrap;
-		border: 0;
+		color: #9dc9e3;
 	}
 </style>

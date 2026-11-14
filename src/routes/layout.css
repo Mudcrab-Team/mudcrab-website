@@ -1,24 +1,82 @@
-@import './theme.css';
-
 @import 'tailwindcss';
 @plugin '@tailwindcss/forms';
 @plugin '@tailwindcss/typography';
-
-html {
-	background: var(--color-background);
-	color: var(--color-text);
-	font-family: var(--font-body);
-	text-rendering: optimizeLegibility;
-	-webkit-font-smoothing: antialiased;
+@plugin 'daisyui' {
+	themes:
+		mudcrab --default,
+		nordic-frost;
 }
 
-body {
-	min-height: 100svh;
-	position: relative;
-	background-image: radial-gradient(
-		1100px 480px at 50% -120px,
-		color-mix(in srgb, var(--color-accent) 4%, transparent),
-		transparent 70%
-	);
-	background-repeat: no-repeat;
+@plugin 'daisyui/theme' {
+	name: 'mudcrab';
+	default: true;
+	prefersdark: true;
+	color-scheme: dark;
+
+	--color-base-100: #0b1219;
+	--color-base-200: #111c27;
+	--color-base-300: #1b2b3c;
+	--color-base-content: #edf3f7;
+
+	--color-primary: #3c6d8a;
+	--color-primary-content: #f5f9fc;
+	--color-secondary: #34557a;
+	--color-secondary-content: #eef4fa;
+	--color-accent: #d38c26;
+	--color-accent-content: #140d03;
+	--color-neutral: #182534;
+	--color-neutral-content: #dbe6ee;
+
+	--color-info: #68a7cc;
+	--color-info-content: #091824;
+	--color-success: #52a87d;
+	--color-success-content: #071910;
+	--color-warning: #d38c26;
+	--color-warning-content: #140d03;
+	--color-error: #d96b6b;
+	--color-error-content: #1f0808;
+
+	--radius-selector: 0.375rem;
+	--radius-field: 0.375rem;
+	--radius-box: 0.5rem;
+	--border: 1px;
+	--depth: 0;
+	--noise: 0;
 }
+
+@plugin 'daisyui/theme' {
+	name: 'nordic-frost';
+	color-scheme: light;
+
+	--color-base-100: #f4f7fa;
+	--color-base-200: #e7eef4;
+	--color-base-300: #d1dde8;
+	--color-base-content: #142232;
+
+	--color-primary: #34557a;
+	--color-primary-content: #f7fafc;
+	--color-secondary: #4a7d9c;
+	--color-secondary-content: #f7fafc;
+	--color-accent: #b87414;
+	--color-accent-content: #ffffff;
+	--color-neutral: #22354a;
+	--color-neutral-content: #f0f5f9;
+
+	--color-info: #3c6d8a;
+	--color-info-content: #ffffff;
+	--color-success: #2f7d57;
+	--color-success-content: #ffffff;
+	--color-warning: #b87414;
+	--color-warning-content: #ffffff;
+	--color-error: #b84242;
+	--color-error-content: #ffffff;
+
+	--radius-selector: 0.375rem;
+	--radius-field: 0.375rem;
+	--radius-box: 0.5rem;
+	--border: 1px;
+	--depth: 0;
+	--noise: 0;
+}
+
+@import './theme.css';
