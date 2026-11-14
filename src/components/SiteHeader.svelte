@@ -131,7 +131,7 @@
 	{#if menuOpen}
 		<div
 			id="mobile-site-menu"
-			class="border-t border-base-300 bg-base-100 px-4 py-5 text-base-content shadow-lg md:hidden"
+			class="max-h-[calc(100dvh-4rem)] overflow-y-auto border-t border-base-300 bg-base-100 px-4 py-5 text-base-content shadow-lg md:hidden"
 		>
 			<nav aria-label="Mobile navigation">
 				<ul class="menu w-full gap-1 p-0">

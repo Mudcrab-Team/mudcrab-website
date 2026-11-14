@@ -25,7 +25,9 @@ cargo run --release -p engine --bin engine -- --assets modern_assets
 # Or jump to a specific worldspace and cell grid
 cargo run --release -p engine --bin engine -- --assets modern_assets --worldspace 60 --grid-x 5 --grid-y -2`;
 
-	const syntheticPipeline = `cargo run -p dummy-content -- gen Data
+	const syntheticPipeline = `git clone https://github.com/Mudcrab-Team/mudcrab.git
+cd mudcrab
+cargo run -p dummy-content -- gen Data
 cargo run -p converter --bin converter -- Data modern_assets
 cargo run -p engine --bin engine -- --assets modern_assets --worldspace 1`;
 
