@@ -9,23 +9,32 @@
 	import SiteFooter from '../components/SiteFooter.svelte';
 
 	let { children } = $props();
+
 	const navigation = $derived([
 		{ label: 'Home', href: '/', active: page.url.pathname === '/' },
+		{ label: 'Modding', href: '/modding', active: page.url.pathname === '/modding' },
 		{ label: 'Releases', href: '/releases', active: page.url.pathname === '/releases' },
-		{ label: 'Roadmap', href: '/roadmap', active: page.url.pathname === '/roadmap' },
-		{ label: 'Components', href: '/components', active: page.url.pathname === '/components' }
+		{ label: 'Roadmap', href: '/roadmap', active: page.url.pathname === '/roadmap' }
 	]);
+
+	const isHome = $derived(page.url.pathname === '/');
 </script>
 
-<svelte:head><link rel="icon" href={favicon} /></svelte:head>
+<svelte:head>
+	<link rel="icon" href={favicon} />
+</svelte:head>
 
-<SiteHeader items={navigation} sticky overlay={page.url.pathname === '/'}>
-	{#snippet brand()}<BrandMark subtitle="Skyrim Bevy Engine" />{/snippet}
+<SiteHeader items={navigation} sticky={!isHome} overlay={isHome}>
+	{#snippet brand()}<BrandMark />{/snippet}
 	{#snippet actions()}<ThemeSwitcher />{/snippet}
 </SiteHeader>
 
-<PageShell>
+{#if isHome}
 	{@render children()}
-</PageShell>
+{:else}
+	<PageShell>
+		{@render children()}
+	</PageShell>
+{/if}
 
 <SiteFooter />
