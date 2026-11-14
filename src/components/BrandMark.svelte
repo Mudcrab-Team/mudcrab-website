@@ -2,38 +2,22 @@
 	import MudcrabLogo from './MudcrabLogo.svelte';
 
 	let {
-		name = 'Mudcrab',
-		subtitle,
-		compact = false,
 		href = '/',
+		compact = false,
 		class: className = ''
 	}: {
-		name?: string;
-		subtitle?: string;
-		compact?: boolean;
 		href?: string;
+		compact?: boolean;
 		class?: string;
 	} = $props();
 </script>
 
 <a
-	class="group inline-flex w-fit items-center gap-3 text-base-content no-underline {className}"
 	{href}
-	aria-label={compact ? name : undefined}
+	class="inline-flex items-center gap-2.5 text-base-content no-underline transition-opacity duration-150 ease-out hover:opacity-90 {className}"
 >
-	<MudcrabLogo
-		class="{compact
-			? 'h-10 w-10'
-			: 'h-9 w-9'} transition-transform duration-200 ease-out group-hover:-translate-y-0.5"
-	/>
+	<MudcrabLogo class={compact ? 'h-8 w-8' : 'h-9 w-9'} framed={false} />
 	{#if !compact}
-		<span class="grid leading-tight">
-			<strong class="font-display text-lg font-bold tracking-tight text-base-content">
-				{name}
-			</strong>
-			{#if subtitle}
-				<span class="text-sm font-medium text-base-content/75">{subtitle}</span>
-			{/if}
-		</span>
+		<span class="font-display text-xl font-bold tracking-tight">Mudcrab</span>
 	{/if}
 </a>
