@@ -136,11 +136,10 @@
 				/>
 			</label>
 
-			<div role="tablist" aria-label="Filter by item type" class="tabs-box tabs bg-base-200 p-1">
+			<div role="group" aria-label="Filter by item type" class="tabs-box tabs bg-base-200 p-1">
 				<button
 					type="button"
-					role="tab"
-					aria-selected={selectedType === 'all'}
+					aria-pressed={selectedType === 'all'}
 					class="tab text-sm font-medium {selectedType === 'all'
 						? 'tab-active bg-primary text-primary-content'
 						: ''}"
@@ -150,8 +149,7 @@
 				</button>
 				<button
 					type="button"
-					role="tab"
-					aria-selected={selectedType === 'Issue'}
+					aria-pressed={selectedType === 'Issue'}
 					class="tab gap-1.5 text-sm font-medium {selectedType === 'Issue'
 						? 'tab-active bg-primary text-primary-content'
 						: ''}"
@@ -162,8 +160,7 @@
 				</button>
 				<button
 					type="button"
-					role="tab"
-					aria-selected={selectedType === 'PullRequest'}
+					aria-pressed={selectedType === 'PullRequest'}
 					class="tab gap-1.5 text-sm font-medium {selectedType === 'PullRequest'
 						? 'tab-active bg-primary text-primary-content'
 						: ''}"

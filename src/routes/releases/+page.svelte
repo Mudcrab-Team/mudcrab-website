@@ -24,6 +24,8 @@ cargo build --release --bin engine --bin launcher
 cargo run --release -p launcher`;
 
 	const syntheticSetup = `# Test the full pipeline without a Skyrim Special Edition install
+git clone https://github.com/Mudcrab-Team/mudcrab.git
+cd mudcrab
 cargo run -p dummy-content -- gen Data
 cargo run -p converter --bin converter -- Data modern_assets
 cargo run -p engine --bin engine -- --assets modern_assets --worldspace 1`;

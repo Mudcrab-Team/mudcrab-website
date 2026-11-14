@@ -4,7 +4,36 @@
 	import MessageSquare from '@lucide/svelte/icons/message-square';
 	import CodeBlock from '../../components/CodeBlock.svelte';
 
-	let guideSection = $state<'mo2' | 'luau' | 'repair' | 'ui'>('mo2');
+	type GuideSection = 'mo2' | 'luau' | 'repair' | 'ui';
+
+	const guideTabs: Array<{ id: GuideSection; label: string }> = [
+		{ id: 'mo2', label: 'MO2 setup' },
+		{ id: 'luau', label: 'Luau & Papyrus' },
+		{ id: 'repair', label: 'Repair & debug' },
+		{ id: 'ui', label: 'Scaleform to bsn!' }
+	];
+
+	let guideSection = $state<GuideSection>('mo2');
+	let guideTabRefs: Array<HTMLButtonElement | null> = $state([]);
+
+	function handleGuideTabKeydown(event: KeyboardEvent, index: number) {
+		let nextIndex: number | null = null;
+		if (event.key === 'ArrowRight') {
+			nextIndex = (index + 1) % guideTabs.length;
+		} else if (event.key === 'ArrowLeft') {
+			nextIndex = (index - 1 + guideTabs.length) % guideTabs.length;
+		} else if (event.key === 'Home') {
+			nextIndex = 0;
+		} else if (event.key === 'End') {
+			nextIndex = guideTabs.length - 1;
+		}
+
+		if (nextIndex !== null) {
+			event.preventDefault();
+			guideSection = guideTabs[nextIndex].id;
+			guideTabRefs[nextIndex]?.focus();
+		}
+	}
 
 	const compatibilityRows = [
 		{
@@ -68,9 +97,11 @@ LIMIT 1;`;
 	const luauMod = `-- Native Luau mod with async web access and Engine bindings
 local HTTP = Engine.HTTP
 local Weather = Engine.Weather
+local openWeatherApiKey = "<YOUR_OPENWEATHER_API_KEY>"
 
 function onGameLoaded()
-    HTTP.getAsync("https://api.openweathermap.org/data/2.5/weather?q=Tokyo", function(response)
+    local url = "https://api.openweathermap.org/data/2.5/weather?q=Tokyo&appid=" .. openWeatherApiKey
+    HTTP.getAsync(url, function(response)
         if response.status == 200 then
             local data = response.json()
             local condition = data.weather[1].main
@@ -92,7 +123,8 @@ cargo run --release -p converter --bin converter -- \\
 
 # 3. Publish validated repairs with a rollback journal
 cargo run --release -p converter --bin converter -- \\
-  repair-failed "<Skyrim Data>" modern_assets --apply`;
+  repair-failed "<Skyrim Data>" modern_assets \\
+  --mo2-instance "<MO2 instance>" --mo2-profile "<Profile>" --apply`;
 
 	const uiTranspile = `// Generated Bevy 0.19 bsn! UI tree from Scaleform InventoryMenu.gfx
 use bevy::prelude::*;
@@ -208,164 +240,165 @@ pub fn spawn_inventory_menu(mut commands: Commands) {
 			</div>
 
 			<div role="tablist" aria-label="Modding workflows" class="tabs-box tabs bg-base-200 p-1">
-				<button
-					type="button"
-					role="tab"
-					aria-selected={guideSection === 'mo2'}
-					class="tab text-sm font-medium {guideSection === 'mo2'
-						? 'tab-active bg-primary text-primary-content'
-						: ''}"
-					onclick={() => (guideSection = 'mo2')}
-				>
-					MO2 setup
-				</button>
-				<button
-					type="button"
-					role="tab"
-					aria-selected={guideSection === 'luau'}
-					class="tab text-sm font-medium {guideSection === 'luau'
-						? 'tab-active bg-primary text-primary-content'
-						: ''}"
-					onclick={() => (guideSection = 'luau')}
-				>
-					Luau &amp; Papyrus
-				</button>
-				<button
-					type="button"
-					role="tab"
-					aria-selected={guideSection === 'repair'}
-					class="tab text-sm font-medium {guideSection === 'repair'
-						? 'tab-active bg-primary text-primary-content'
-						: ''}"
-					onclick={() => (guideSection = 'repair')}
-				>
-					Repair &amp; debug
-				</button>
-				<button
-					type="button"
-					role="tab"
-					aria-selected={guideSection === 'ui'}
-					class="tab text-sm font-medium {guideSection === 'ui'
-						? 'tab-active bg-primary text-primary-content'
-						: ''}"
-					onclick={() => (guideSection = 'ui')}
-				>
-					Scaleform to bsn!
-				</button>
+				{#each guideTabs as tab, index (tab.id)}
+					<button
+						bind:this={guideTabRefs[index]}
+						id="guide-tab-{tab.id}"
+						type="button"
+						role="tab"
+						aria-selected={guideSection === tab.id}
+						aria-controls="guide-panel-{tab.id}"
+						tabindex={guideSection === tab.id ? 0 : -1}
+						class="tab text-sm font-medium {guideSection === tab.id
+							? 'tab-active bg-primary text-primary-content'
+							: ''}"
+						onclick={() => (guideSection = tab.id)}
+						onkeydown={(event) => handleGuideTabKeydown(event, index)}
+					>
+						{tab.label}
+					</button>
+				{/each}
 			</div>
 		</div>
 
 		<div class="mt-8">
-			{#if guideSection === 'mo2'}
-				<div class="grid gap-8 lg:grid-cols-12">
-					<div class="min-w-0 space-y-4 lg:col-span-5">
-						<h3>Overlay Mod Organizer 2 profiles in place</h3>
-						<p class="text-sm leading-relaxed text-base-content/80">
-							In the Launcher, switch source mode to <strong>MO2 profile</strong>, open MO2
-							settings, and drop the folder containing
-							<code class="text-info">ModOrganizer.ini</code>. Select your profile from the dropdown
-							while keeping your base Skyrim Data folder configured.
-						</p>
-						<ul class="list-disc space-y-2 pl-5 text-sm text-base-content/80">
-							<li>
-								MO2 instances must declare a supported Skyrim <code class="text-info">gameName</code
-								>.
-							</li>
-							<li>
-								Configured directories may resolve through junctions, while profile, enabled-mod,
-								and asset reparse points are rejected for safety.
-							</li>
-							<li>
-								Changes to MO2 window settings or disabled mods do not invalidate the whole cache;
-								only winning assets and plugin changes re-run.
-							</li>
-						</ul>
-					</div>
-					<div class="min-w-0 space-y-4 lg:col-span-7">
-						<CodeBlock code={mo2Cli} language="bash" filename="CLI MO2 conversion" />
-						<CodeBlock code={sqliteQuery} language="sql" filename="SQLite mod layering query" />
-					</div>
+			<div
+				id="guide-panel-mo2"
+				role="tabpanel"
+				aria-labelledby="guide-tab-mo2"
+				tabindex="0"
+				hidden={guideSection !== 'mo2'}
+				class={guideSection === 'mo2' ? 'grid gap-8 lg:grid-cols-12' : 'hidden'}
+			>
+				<div class="min-w-0 space-y-4 lg:col-span-5">
+					<h3>Overlay Mod Organizer 2 profiles in place</h3>
+					<p class="text-sm leading-relaxed text-base-content/80">
+						In the Launcher, switch source mode to <strong>MO2 profile</strong>, open MO2 settings,
+						and drop the folder containing
+						<code class="text-info">ModOrganizer.ini</code>. Select your profile from the dropdown
+						while keeping your base Skyrim Data folder configured.
+					</p>
+					<ul class="list-disc space-y-2 pl-5 text-sm text-base-content/80">
+						<li>
+							MO2 instances must declare a supported Skyrim <code class="text-info">gameName</code>.
+						</li>
+						<li>
+							Configured directories may resolve through junctions, while profile, enabled-mod, and
+							asset reparse points are rejected for safety.
+						</li>
+						<li>
+							Changes to MO2 window settings or disabled mods do not invalidate the whole cache;
+							only winning assets and plugin changes re-run.
+						</li>
+					</ul>
 				</div>
-			{:else if guideSection === 'luau'}
-				<div class="grid gap-8 lg:grid-cols-12">
-					<div class="min-w-0 space-y-4 lg:col-span-5">
-						<h3>Sandboxed Luau replaces single-threaded Papyrus</h3>
-						<p class="text-sm leading-relaxed text-base-content/80">
-							Legacy <code class="text-info">.pex</code> bytecode inside archives or
-							<code class="text-info">Scripts/</code> folders transpiles into Luau scripts running
-							on <code class="text-info">crates/shared/src/papyrus_runtime.luau</code>.
-						</p>
-						<ul class="list-disc space-y-2 pl-5 text-sm text-base-content/80">
-							<li>
-								Scripts run in an isolated Luau sandbox with safe engine bindings and no arbitrary
-								OS filesystem access.
-							</li>
-							<li>
-								Async HTTP and WebSockets let mods fetch live weather, leaderboards, or local LLM
-								dialogue via Ollama.
-							</li>
-							<li>
-								Hot-reloading and <code class="text-info">.d.lua</code> editor type definitions are part
-								of the Phase 3 modder experience.
-							</li>
-						</ul>
-					</div>
-					<div class="min-w-0 lg:col-span-7">
-						<CodeBlock code={luauMod} language="luau" filename="scripts/LiveWeatherSync.lua" />
-					</div>
+				<div class="min-w-0 space-y-4 lg:col-span-7">
+					<CodeBlock code={mo2Cli} language="bash" filename="CLI MO2 conversion" />
+					<CodeBlock code={sqliteQuery} language="sql" filename="SQLite mod layering query" />
 				</div>
-			{:else if guideSection === 'repair'}
-				<div class="grid gap-8 lg:grid-cols-12">
-					<div class="min-w-0 space-y-4 lg:col-span-5">
-						<h3>Repair failed conversions without rebuilding the world</h3>
-						<p class="text-sm leading-relaxed text-base-content/80">
-							When a mod pack has corrupt meshes or interrupted textures, use
-							<code class="text-info">repair-failed</code> to stage only failed inputs and their texture/skeleton
-							dependencies, leaving the rest of your pack intact.
-						</p>
-						<div role="alert" class="alert border border-warning/40 bg-base-200 text-sm">
-							<AlertTriangle size={18} class="shrink-0 text-warning" aria-hidden="true" />
-							<span>
-								Match your original <code class="text-info">--texture-encoder</code> flags when
-								repairing, and close the running engine before
-								<code class="text-info">--apply</code>.
-							</span>
-						</div>
-						<p class="text-sm text-base-content/75">
-							BodySlide and Outfit Studio files under <code class="text-info">CalienteTools</code>
-							are automatically excluded as authoring data and logged under
-							<code class="text-info">excluded_inputs</code> in the manifest.
-						</p>
-					</div>
-					<div class="lg:col-span-7">
-						<CodeBlock code={repairCli} language="bash" filename="Validate & repair pack" />
-					</div>
+			</div>
+
+			<div
+				id="guide-panel-luau"
+				role="tabpanel"
+				aria-labelledby="guide-tab-luau"
+				tabindex="0"
+				hidden={guideSection !== 'luau'}
+				class={guideSection === 'luau' ? 'grid gap-8 lg:grid-cols-12' : 'hidden'}
+			>
+				<div class="min-w-0 space-y-4 lg:col-span-5">
+					<h3>Sandboxed Luau replaces single-threaded Papyrus</h3>
+					<p class="text-sm leading-relaxed text-base-content/80">
+						Legacy <code class="text-info">.pex</code> bytecode inside archives or
+						<code class="text-info">Scripts/</code> folders transpiles into Luau scripts running on
+						<code class="text-info">crates/shared/src/papyrus_runtime.luau</code>.
+					</p>
+					<ul class="list-disc space-y-2 pl-5 text-sm text-base-content/80">
+						<li>
+							Scripts run in an isolated Luau sandbox with safe engine bindings and no arbitrary OS
+							filesystem access.
+						</li>
+						<li>
+							Async HTTP and WebSockets let mods fetch live weather, leaderboards, or local LLM
+							dialogue via Ollama. For authenticated APIs such as OpenWeather, supply your own API
+							key by replacing <code class="text-info">&lt;YOUR_OPENWEATHER_API_KEY&gt;</code> in your
+							local mod configuration and avoid committing real keys to shared packs.
+						</li>
+						<li>
+							Hot-reloading and <code class="text-info">.d.lua</code> editor type definitions are part
+							of the Phase 3 modder experience.
+						</li>
+					</ul>
 				</div>
-			{:else}
-				<div class="grid gap-8 lg:grid-cols-12">
-					<div class="min-w-0 space-y-4 lg:col-span-5">
-						<h3>Native Bevy UI instead of Scaleform Flash</h3>
-						<p class="text-sm leading-relaxed text-base-content/80">
-							Original Skyrim menus rely on Adobe Flash (<code class="text-info">.swf</code> /
-							<code class="text-info">.gfx</code>) and ActionScript 2.0. Mudcrab eliminates embedded
-							browser or Flash runtimes completely.
-						</p>
-						<ul class="list-disc space-y-2 pl-5 text-sm text-base-content/80">
-							<li>
-								Flash shapes, buttons, and containers transpile offline into Bevy 0.19
-								<code class="text-info">bsn!</code> declarative widget trees.
-							</li>
-							<li>
-								ActionScript UI callbacks transpile to Luau handlers so one scripting runtime drives
-								both UI and gameplay.
-							</li>
-						</ul>
-					</div>
-					<div class="lg:col-span-7">
-						<CodeBlock code={uiTranspile} language="rust" filename="src/ui/inventory_menu.rs" />
-					</div>
+				<div class="min-w-0 lg:col-span-7">
+					<CodeBlock code={luauMod} language="luau" filename="scripts/LiveWeatherSync.lua" />
 				</div>
-			{/if}
+			</div>
+
+			<div
+				id="guide-panel-repair"
+				role="tabpanel"
+				aria-labelledby="guide-tab-repair"
+				tabindex="0"
+				hidden={guideSection !== 'repair'}
+				class={guideSection === 'repair' ? 'grid gap-8 lg:grid-cols-12' : 'hidden'}
+			>
+				<div class="min-w-0 space-y-4 lg:col-span-5">
+					<h3>Repair failed conversions without rebuilding the world</h3>
+					<p class="text-sm leading-relaxed text-base-content/80">
+						When a mod pack has corrupt meshes or interrupted textures, use
+						<code class="text-info">repair-failed</code> to stage only failed inputs and their texture/skeleton
+						dependencies, leaving the rest of your pack intact.
+					</p>
+					<div role="alert" class="alert border border-warning/40 bg-base-200 text-sm">
+						<AlertTriangle size={18} class="shrink-0 text-warning" aria-hidden="true" />
+						<span>
+							Match your original <code class="text-info">--texture-encoder</code> flags when
+							repairing, and close the running engine before
+							<code class="text-info">--apply</code>.
+						</span>
+					</div>
+					<p class="text-sm text-base-content/75">
+						BodySlide and Outfit Studio files under <code class="text-info">CalienteTools</code>
+						are automatically excluded as authoring data and logged under
+						<code class="text-info">excluded_inputs</code> in the manifest.
+					</p>
+				</div>
+				<div class="lg:col-span-7">
+					<CodeBlock code={repairCli} language="bash" filename="Validate & repair pack" />
+				</div>
+			</div>
+
+			<div
+				id="guide-panel-ui"
+				role="tabpanel"
+				aria-labelledby="guide-tab-ui"
+				tabindex="0"
+				hidden={guideSection !== 'ui'}
+				class={guideSection === 'ui' ? 'grid gap-8 lg:grid-cols-12' : 'hidden'}
+			>
+				<div class="min-w-0 space-y-4 lg:col-span-5">
+					<h3>Native Bevy UI instead of Scaleform Flash</h3>
+					<p class="text-sm leading-relaxed text-base-content/80">
+						Original Skyrim menus rely on Adobe Flash (<code class="text-info">.swf</code> /
+						<code class="text-info">.gfx</code>) and ActionScript 2.0. Mudcrab eliminates embedded
+						browser or Flash runtimes completely.
+					</p>
+					<ul class="list-disc space-y-2 pl-5 text-sm text-base-content/80">
+						<li>
+							Flash shapes, buttons, and containers transpile offline into Bevy 0.19
+							<code class="text-info">bsn!</code> declarative widget trees.
+						</li>
+						<li>
+							ActionScript UI callbacks transpile to Luau handlers so one scripting runtime drives
+							both UI and gameplay.
+						</li>
+					</ul>
+				</div>
+				<div class="lg:col-span-7">
+					<CodeBlock code={uiTranspile} language="rust" filename="src/ui/inventory_menu.rs" />
+				</div>
+			</div>
 		</div>
 	</section>
 </main>

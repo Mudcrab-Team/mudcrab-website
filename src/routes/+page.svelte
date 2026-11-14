@@ -15,7 +15,9 @@ cd mudcrab
 cargo build --release --bin engine --bin launcher
 cargo run --release -p launcher`;
 
-	const syntheticCommands = `cargo run -p dummy-content -- gen Data
+	const syntheticCommands = `git clone https://github.com/Mudcrab-Team/mudcrab.git
+cd mudcrab
+cargo run -p dummy-content -- gen Data
 cargo run -p converter --bin converter -- Data modern_assets
 cargo run -p engine --bin engine -- --assets modern_assets --worldspace 1`;
 
@@ -27,11 +29,15 @@ cargo run --release -p converter --bin converter -- \\
   --texture-encoder gpu`;
 
 	const luauExample = `-- Modern Luau mod: sync Skyrim weather from an async web request
+-- Configure your own OpenWeather API key before enabling
 local HTTP = Engine.HTTP
 local Weather = Engine.Weather
+local apiKey = "<YOUR_OPENWEATHER_API_KEY>"
+local city = "London"
 
 function onGameLoaded()
-    HTTP.getAsync("https://api.openweathermap.org/data/2.5/weather?q=Whiterun", function(res)
+    local url = "https://api.openweathermap.org/data/2.5/weather?q=" .. city .. "&appid=" .. apiKey
+    HTTP.getAsync(url, function(res)
         if res.status == 200 then
             local data = res.json()
             if data.weather[1].main == "Rain" then
@@ -549,7 +555,7 @@ commands.spawn(bsn! {
 			<div class="space-y-3 lg:col-span-8">
 				{#each faqs as faq, index (faq.q)}
 					<div class="collapse-arrow collapse rounded-box border border-base-300 bg-base-200/60">
-						<input type="radio" name="mudcrab-faq" checked={index === 0} />
+						<input type="radio" name="mudcrab-faq" checked={index === 0} aria-label={faq.q} />
 						<div class="collapse-title font-semibold text-base-content">
 							{faq.q}
 						</div>
