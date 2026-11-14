@@ -1,11 +1,12 @@
 <script lang="ts">
+	import { CONTRIBUTING_URL, DISCORD_URL, GITHUB_URL, ISSUES_URL, LEGAL_URL } from '$lib/site';
 	import BrandMark from './BrandMark.svelte';
 </script>
 
-<footer class="mt-20 border-t border-base-300 bg-base-200/75 text-base-content">
+<footer class="mt-20 border-t border-base-300 bg-base-200/80 text-base-content">
 	<div class="mx-auto max-w-[var(--content-wide)] px-4 py-14 sm:px-6 lg:px-8">
 		<div class="grid gap-10 md:grid-cols-12">
-			<div class="space-y-4 md:col-span-5">
+			<div class="space-y-3 md:col-span-5">
 				<BrandMark />
 				<p class="max-w-md text-sm leading-relaxed text-base-content/75">
 					An open-source engine reimplementation for Skyrim Special Edition, built in Rust on Bevy
@@ -14,21 +15,21 @@
 			</div>
 
 			<div class="space-y-3 md:col-span-3">
-				<h3 class="text-sm font-semibold text-base-content">For players &amp; modders</h3>
+				<h3 class="text-sm font-semibold text-base-content">Guides &amp; status</h3>
 				<ul class="list-none space-y-2 p-0 text-sm">
 					<li>
-						<a href="/#start" class="link text-base-content/80 link-hover">Quick start guide</a>
+						<a href="/play" class="link text-base-content/80 link-hover">Player setup guide</a>
 					</li>
 					<li>
-						<a href="/modding" class="link text-base-content/80 link-hover">Modding help hub</a>
+						<a href="/modding" class="link text-base-content/80 link-hover">Modding help center</a>
+					</li>
+					<li>
+						<a href="/roadmap" class="link text-base-content/80 link-hover">Live project board</a>
 					</li>
 					<li>
 						<a href="/releases" class="link text-base-content/80 link-hover"
 							>Releases &amp; builds</a
 						>
-					</li>
-					<li>
-						<a href="/roadmap" class="link text-base-content/80 link-hover">Live project board</a>
 					</li>
 				</ul>
 			</div>
@@ -38,7 +39,7 @@
 				<ul class="list-none space-y-2 p-0 text-sm">
 					<li>
 						<a
-							href="https://github.com/Mudcrab-Team/mudcrab"
+							href={GITHUB_URL}
 							target="_blank"
 							rel="noreferrer"
 							class="link text-base-content/80 link-hover"
@@ -48,7 +49,7 @@
 					</li>
 					<li>
 						<a
-							href="https://discord.gg/29GRf8QShH"
+							href={DISCORD_URL}
 							target="_blank"
 							rel="noreferrer"
 							class="link text-base-content/80 link-hover"
@@ -58,7 +59,7 @@
 					</li>
 					<li>
 						<a
-							href="https://github.com/Mudcrab-Team/mudcrab/blob/main/CONTRIBUTING.md"
+							href={CONTRIBUTING_URL}
 							target="_blank"
 							rel="noreferrer"
 							class="link text-base-content/80 link-hover"
@@ -68,7 +69,17 @@
 					</li>
 					<li>
 						<a
-							href="https://github.com/Mudcrab-Team/mudcrab/blob/main/LEGAL.md"
+							href={ISSUES_URL}
+							target="_blank"
+							rel="noreferrer"
+							class="link text-base-content/80 link-hover"
+						>
+							Issue tracker
+						</a>
+					</li>
+					<li>
+						<a
+							href={LEGAL_URL}
 							target="_blank"
 							rel="noreferrer"
 							class="link text-base-content/80 link-hover"

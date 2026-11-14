@@ -65,7 +65,7 @@ cargo run -p engine --bin engine -- --assets modern_assets --worldspace 1`;
 					role="tab"
 					aria-selected={buildTab === 'linux'}
 					class="tab text-sm font-medium {buildTab === 'linux'
-						? 'tab-active bg-primary text-primary-content'
+						? 'tab-active bg-secondary text-secondary-content'
 						: ''}"
 					onclick={() => (buildTab = 'linux')}
 				>
@@ -76,7 +76,7 @@ cargo run -p engine --bin engine -- --assets modern_assets --worldspace 1`;
 					role="tab"
 					aria-selected={buildTab === 'windows'}
 					class="tab text-sm font-medium {buildTab === 'windows'
-						? 'tab-active bg-primary text-primary-content'
+						? 'tab-active bg-secondary text-secondary-content'
 						: ''}"
 					onclick={() => (buildTab = 'windows')}
 				>
@@ -87,7 +87,7 @@ cargo run -p engine --bin engine -- --assets modern_assets --worldspace 1`;
 					role="tab"
 					aria-selected={buildTab === 'synthetic'}
 					class="tab text-sm font-medium {buildTab === 'synthetic'
-						? 'tab-active bg-primary text-primary-content'
+						? 'tab-active bg-secondary text-secondary-content'
 						: ''}"
 					onclick={() => (buildTab = 'synthetic')}
 				>
@@ -109,7 +109,8 @@ cargo run -p engine --bin engine -- --assets modern_assets --worldspace 1`;
 		{/if}
 
 		<p class="text-sm text-base-content/75">
-			Build both <code class="text-info">engine</code> and <code class="text-info">launcher</code>
+			Build both <code class="text-accent">engine</code> and
+			<code class="text-accent">launcher</code>
 			with the same Cargo profile so the launcher locates the matching engine binary next to it.
 		</p>
 	</section>
@@ -118,7 +119,7 @@ cargo run -p engine --bin engine -- --assets modern_assets --worldspace 1`;
 		<div class="space-y-2">
 			<h2 id="latest-release-heading">Latest GitHub release</h2>
 			<p class="text-base-content/75">
-				Tagged builds and release notes fetched from <code class="text-info"
+				Tagged builds and release notes fetched from <code class="text-accent"
 					>Mudcrab-Team/mudcrab</code
 				>.
 			</p>
@@ -135,7 +136,7 @@ cargo run -p engine --bin engine -- --assets modern_assets --worldspace 1`;
 		{:else if !latestRelease}
 			<div class="rounded-box border border-base-300 bg-base-200/50 p-6">
 				<p class="text-base-content/80">
-					No tagged binary releases are published yet. Clone <code class="text-info">main</code> using
+					No tagged binary releases are published yet. Clone <code class="text-accent">main</code> using
 					the source commands above to try the latest converter and engine.
 				</p>
 			</div>
@@ -167,7 +168,7 @@ cargo run -p engine --bin engine -- --assets modern_assets --worldspace 1`;
 										href={asset.browser_download_url}
 										target="_blank"
 										rel="noopener noreferrer"
-										class="inline-flex link items-center gap-2 font-medium text-info link-hover"
+										class="inline-flex link items-center gap-2 font-medium text-accent link-hover"
 									>
 										<Download size={15} aria-hidden="true" />
 										<span>{asset.name}</span>

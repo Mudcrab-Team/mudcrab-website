@@ -161,7 +161,7 @@ if (profile.ready) {
 				<div class="type-specimen">
 					<div class="type-row">
 						<span class="type-label">H1 · 3xl</span>
-						<h1>The Elder Scrolls V</h1>
+						<p class="font-display font-bold text-[var(--text-3xl)]">The Elder Scrolls V</p>
 					</div>
 					<div class="type-row">
 						<span class="type-label">H2 · 2xl</span>
@@ -678,8 +678,8 @@ if (profile.ready) {
 							<p>Moving this entry may change which resources take priority when the game loads.</p>
 						{/snippet}
 						{#snippet footer()}
-							<button class="modal-action secondary" type="button">Cancel</button>
-							<button class="modal-action primary" type="button">Accept</button>
+							<button class="secondary modal-action" type="button">Cancel</button>
+							<button class="primary modal-action" type="button">Accept</button>
 						{/snippet}
 					</Modal>
 				</div>
@@ -783,11 +783,6 @@ if (profile.ready) {
 	}
 	.eyebrow {
 		margin-bottom: 0.7rem;
-	}
-	.rule {
-		height: 1px;
-		margin: clamp(2.5rem, 8vw, 6rem) 0;
-		background: linear-gradient(90deg, var(--color-border), transparent);
 	}
 	.section + .section {
 		margin-top: clamp(4rem, 10vw, 8rem);

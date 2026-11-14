@@ -11,10 +11,10 @@
 	let { children } = $props();
 
 	const navigation = $derived([
-		{ label: 'Home', href: '/', active: page.url.pathname === '/' },
-		{ label: 'Modding', href: '/modding', active: page.url.pathname === '/modding' },
-		{ label: 'Releases', href: '/releases', active: page.url.pathname === '/releases' },
-		{ label: 'Roadmap', href: '/roadmap', active: page.url.pathname === '/roadmap' }
+		{ label: 'Play', href: '/play', active: page.url.pathname.startsWith('/play') },
+		{ label: 'Modding', href: '/modding', active: page.url.pathname.startsWith('/modding') },
+		{ label: 'Roadmap', href: '/roadmap', active: page.url.pathname.startsWith('/roadmap') },
+		{ label: 'Releases', href: '/releases', active: page.url.pathname.startsWith('/releases') }
 	]);
 
 	const isHome = $derived(page.url.pathname === '/');
@@ -25,7 +25,7 @@
 </svelte:head>
 
 <SiteHeader items={navigation} sticky={!isHome} overlay={isHome}>
-	{#snippet brand()}<BrandMark />{/snippet}
+	{#snippet brand()}<BrandMark class={isHome ? 'text-current' : ''} />{/snippet}
 	{#snippet actions()}<ThemeSwitcher />{/snippet}
 </SiteHeader>
 

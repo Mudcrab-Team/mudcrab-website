@@ -111,7 +111,7 @@
 				</div>
 				<div class="stat px-2 py-2 sm:px-4">
 					<div class="stat-title text-sm text-base-content/70">Completion</div>
-					<div class="stat-value font-bold text-[var(--text-section)] text-info">
+					<div class="stat-value font-bold text-[var(--text-section)] text-accent">
 						{data.stats.completionRate}%
 					</div>
 				</div>
@@ -141,7 +141,7 @@
 					type="button"
 					aria-pressed={selectedType === 'all'}
 					class="tab text-sm font-medium {selectedType === 'all'
-						? 'tab-active bg-primary text-primary-content'
+						? 'tab-active bg-secondary text-secondary-content'
 						: ''}"
 					onclick={() => (selectedType = 'all')}
 				>
@@ -151,7 +151,7 @@
 					type="button"
 					aria-pressed={selectedType === 'Issue'}
 					class="tab gap-1.5 text-sm font-medium {selectedType === 'Issue'
-						? 'tab-active bg-primary text-primary-content'
+						? 'tab-active bg-secondary text-secondary-content'
 						: ''}"
 					onclick={() => (selectedType = 'Issue')}
 				>
@@ -162,7 +162,7 @@
 					type="button"
 					aria-pressed={selectedType === 'PullRequest'}
 					class="tab gap-1.5 text-sm font-medium {selectedType === 'PullRequest'
-						? 'tab-active bg-primary text-primary-content'
+						? 'tab-active bg-secondary text-secondary-content'
 						: ''}"
 					onclick={() => (selectedType = 'PullRequest')}
 				>
@@ -201,12 +201,12 @@
 									href={card.url}
 									target="_blank"
 									rel="noopener noreferrer"
-									class="group flex flex-col gap-2.5 rounded-box border border-base-300 bg-base-100/90 p-3.5 no-underline transition-[transform,border-color] duration-150 ease-out hover:-translate-y-0.5 hover:border-primary"
+									class="group flex flex-col gap-2.5 rounded-box border border-base-300 bg-base-100/90 p-3.5 no-underline transition-[transform,border-color] duration-150 ease-out hover:-translate-y-0.5 hover:border-secondary"
 								>
 									<div class="flex items-center justify-between text-sm text-base-content/70">
 										<span class="inline-flex items-center gap-1.5 font-medium">
 											{#if card.type === 'PullRequest'}
-												<GitPullRequest size={14} class="text-info" aria-label="Pull Request" />
+												<GitPullRequest size={14} class="text-accent" aria-label="Pull Request" />
 												<span>PR #{card.number}</span>
 											{:else}
 												<CircleDot size={14} class="text-success" aria-label="Issue" />

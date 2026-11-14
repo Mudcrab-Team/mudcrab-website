@@ -1,0 +1,10 @@
+export const GITHUB_URL = 'https://github.com/Mudcrab-Team/mudcrab';
+export const DISCORD_URL = 'https://discord.gg/29GRf8QShH';
+export const CONTRIBUTING_URL = `${GITHUB_URL}/blob/main/CONTRIBUTING.md`;
+export const LEGAL_URL = `${GITHUB_URL}/blob/main/LEGAL.md`;
+export const ISSUES_URL = `${GITHUB_URL}/issues`;
+export const MODDING_SPECS_URL = `${GITHUB_URL}/tree/main/docs/specs/modding`;
+export const CONVERTER_GUIDE_URL = `${GITHUB_URL}/blob/main/docs/guides/converter.md`;
+export const ENGINE_GUIDE_URL = `${GITHUB_URL}/blob/main/docs/guides/engine.md`;
+export const REQUIREMENTS_URL = `${GITHUB_URL}/blob/main/docs/specs/meta/requirements.md`;
+export const ROADMAP_DOCS_URL = `${GITHUB_URL}/blob/main/docs/roadmap/README.md`;
